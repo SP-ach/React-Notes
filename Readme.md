@@ -270,13 +270,13 @@ In this example, we define a function-based component called `ExampleComponent`.
 
 Function-based components have several **advantages** over class-based components:
 
->They are simpler and more lightweight than class-based components, which makes them easier to read, write, and maintain.
+* They are simpler and more lightweight than class-based components, which makes them easier to read, write, and maintain.
 
->They are less verbose than class-based components, which means less boilerplate code.
+* They are less verbose than class-based components, which means less boilerplate code.
 
->They are easier to test because they are just plain functions that take in props and return a React element.
+* They are easier to test because they are just plain functions that take in props and return a React element.
 
->They are faster than class-based components, because they don't have the overhead of a class instance and lifecycle methods.
+* They are faster than class-based components, because they don't have the overhead of a class instance and lifecycle methods.
 
 In summary, function-based components are a simpler and more lightweight way to define components in React. They are easier to read, write, and maintain, and provide better performance than class-based components. For these reasons, they have become the preferred way to define components in modern React development.
 
@@ -301,12 +301,12 @@ That being said, function components are generally considered the better choice 
 |     | Functional Components |	Class Components |
 | :---| :---------------------| :----------------|
 |`Definition`|	Defined as a JavaScript function |	Defined as a JavaScript class|
-|`Stat Management` |	Uses useState and useEffect hooks to manage state and lifecycle methods|	Uses state and lifecycle methods inside the class|
+|`Stat-Management` |	Uses useState and useEffect hooks to manage state and lifecycle methods|	Uses state and lifecycle methods inside the class|
 |`Props`|	Passed in as an argument to the function | Passed in as a property to the class|
-|`Lifecycle Methods`|	Uses useEffect hook to manage component lifecycle	|Has access to lifecycle methods such as componentDidMount and componentDidUpdate|
+|`Lifecycle-Methods`|	Uses useEffect hook to manage component lifecycle	|Has access to lifecycle methods such as componentDidMount and componentDidUpdate|
 |`Performance`|	Generally faster because they do not have to create an instance of the component|	Slightly slower because they have to create an instance of the component|
 |`Syntax`|	Simpler and easier to read and understand|	More verbose and complex|
-|`Code Reusability`|	Can be easily reused in other components	|Cannot be easily reused in other components|
+|`Code-Reusability`|	Can be easily reused in other components	|Cannot be easily reused in other components|
 |`Testing`|	Easier to test because they are pure functions|	More difficult to test because they have state and lifecycle methods|
 |`Refs`|	Cannot use refs directly inside the component|	Can use refs directly inside the component|
 
