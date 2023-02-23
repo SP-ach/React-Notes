@@ -12,6 +12,7 @@
 
 * Finally, React can be used with other popular front-end libraries and frameworks, such as Redux for managing state and React Router for routing. It also has a large and active community, which provides helpful resources and support for developers.
 
+## React Vs Angular Vs Vue
 
 
 | Feature    | React     | Vue      | Angular    |
@@ -49,8 +50,8 @@ This tree-like structure is called the Document Object Model, also known as the 
 * Now when any user makes any changes on the screen like button click, then the changes will not directly go to Real Dom.
 * So, we are having two virtual doms, one VDOM gets created at the time of mounting of react component so it is a copy of your real DOM.
 * Another VDOM is the dom which contains the new changes, updated state variables values.
-* Now these two virtual DOMs will get compared with each other and will check for the new changes this complete procedure is known as **diffing algorithm.** 
-* Now the new changes will be updated in your Real DOM, this procedure is known as **Recoinciliation**
+* Now these two virtual DOMs will get compared with each other and will check for the new changes this complete procedure is known as **`diffing algorithm.`**
+* Now the new changes will be updated in your Real DOM, this procedure is known as **`Recoinciliation`**
 This makes a big difference! React can update only the necessary parts of the DOM. React’s reputation for performance comes largely from this innovation.
 
 In summary, here’s what happens when you try to update the DOM in React:
