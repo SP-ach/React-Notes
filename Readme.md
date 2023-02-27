@@ -2,13 +2,22 @@
 
 ## What is React.JS?
 
-* React.js is a popular open-source JavaScript library used to build user interfaces for web applications. It was developed by Facebook and has been widely adopted by the web development community for its simplicity, speed, and flexibility.
+* React.js is a popular **open-source JavaScript library** used to build user interfaces for web applications. It was developed by `Facebook` and has been widely adopted by the web development community for its simplicity, speed, and flexibility.
 
 * In a nutshell, React allows developers to create reusable UI components that can be combined to form complex user interfaces. Each component encapsulates its own logic and state, making it easier to reason about the behavior of the application.
 
-* React is based on a concept called the **virtual DOM**, which is a lightweight representation of the actual DOM (Document Object Model). When a user interacts with a React component, the virtual DOM is updated to reflect the changes, and then React efficiently updates only the necessary parts of the actual DOM to reflect those changes. This results in better performance and a smoother user experience.
+* React is based on a concept called the **virtual DOM**, which is a lightweight representation of the actual DOM (Document Object Model). 
+* When a user interacts with a React component, the virtual DOM is updated to reflect the changes, and then React efficiently updates only the necessary parts of the actual DOM to reflect those changes. This results in better performance and a smoother user experience.
 
-* React also uses a declarative programming model, meaning that you describe what you want your UI to look like, and React takes care of updating the actual DOM accordingly. This is in contrast to an imperative programming model, where you have to manually manipulate the DOM to achieve the desired result.
+**There are two kinds of programming,**
+* Declarative Programming
+* Imperative Programming
+
+*Declarative Programming:*<br>
+Its main goal is to get desired output without describing how to get it .
+*Imperative Programming:*<br>
+Its main goal is to describe how to get output or accomplish it
+**React is Declarative in nature.**
 
 * Finally, React can be used with other popular front-end libraries and frameworks, such as Redux for managing state and React Router for routing. It also has a large and active community, which provides helpful resources and support for developers.
 
@@ -862,3 +871,81 @@ export default class componentDidUpdateMethod extends Component {
     }
 }
 ```
+In the above example, you will notice that first I have initialized the name state inside the constructor method and after that changed state using setState inside `componentDidMount` method. So basically the name state should be changed from "`shouldComponentUpdate` Method" to `“componentDidMount` Method” after `5` seconds but it didn’t change because of `shouldComponentUpdate` set to `false`, If you change that true the state will be updated.
+
+**componentDidUpdate()**<br>
+The componentDidUpdate method is called after the component is updated in the DOM. This is the best place in updating the DOM in response to the change of props and state.
+
+```javascript
+import React, { Component } from 'react'
+
+export default class componentDidUpdateMethod extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            name: 'from previous state'
+        }
+    }
+    componentDidMount(){
+        setTimeout(() => {
+            this.setState({name: "to current state"})
+          }, 5000)
+    }
+    componentDidUpdate(prevState){
+        if(prevState.name !== this.state.name){
+            document.getElementById('statechange').innerHTML = "Yes the state is changed"
+        }
+    }
+    render() {
+        return (
+            <div>
+                State was changed {this.state.name}
+                <p id="statechange"></p>
+            </div>
+        )
+    }
+}
+```
+In the above example, I have set the name state to to current state So React will render the `name` state from State was changed from previous state to State was changed to current state after `5` seconds. Using the conditional checking of the current state with the previous state **prevState.name !== this.state.name** inside the `componentDidUpdate` method, we are updating the value of the id `statechange` to `Yes the state is changed .`
+
+
+**componentWillUnmount()**<br>
+If there are any cleanup actions like canceling API calls or clearing any caches in storage you can perform that in the componentWillUnmount method. You cannot use setState inside this method as the component will never be re-rendered.
+
+```javascript
+
+import React, { Component } from 'react'
+
+export default class componentWillUnmount extends Component {
+    constructor(props){
+        super(props)
+            this.state = {
+                show: true,
+            } 
+    }
+    render() {
+        return (
+            <>
+              <p>{this.state.show ? <Child/> : null}</p>
+               <button onClick={() => {this.setState({show: !this.state.show})}}>Click me to toggle</button>
+            </>
+        )
+    }
+}
+
+export class Child extends Component{
+    componentWillUnmount(){
+        alert('This will unmount')
+    }
+    render(){
+        return(
+            <>
+            I am a child component
+            </>
+        )
+    }
+}
+```
+In the above example, I have created a simple toggle button which will show our `Child component` if the state is set to true. 
+
+So after clicking on the button an alert will popup displaying `This will unmount` The alert will popup because the component is about to be removed from the DOM which in our case is the Child component.
