@@ -225,31 +225,59 @@ In React class components to initialize the component's state and to bind event 
 
 **super()** is used to call the constructor of its parent class. If we would like to set a property or access this inside the constructor we need to call super() method. 
 
+> It is not necessary to have a constructor in every component.
+
+> It is necessary to call super() within the constructor. To set property or use 'this' inside the constructor it is mandatory to call super().
+
+
+### React Component with Constructor
 ```javascript
 
-import React from 'react';
-
-class ExampleComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: 'John',
-      age: 30
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>My name is {this.state.name} and I am {this.state.age} years old.</h1>
-      </div>
-    );
-  }
-}
+import React from 'react'; 
+import ReactDOM from 'react-dom'; 
+class Main extends React.Component { 
+  constructor() { 
+    super(); 
+    this.state = { 
+      planet: "Earth" 
+    } 
+  } 
+  render() { 
+    return ( 
+      < h1 >Hello {this.state.planet}!</h1> 
+    ); 
+  } 
+} 
+ReactDOM.render(<Main />, document.getElementById('root')); 
 ```
-In this example, we define a class-based component called `ExampleComponent`. We define a `constructor` method that calls the `super` method to initialize the component's `props` and sets the component's initial state to an object with two properties, `name` and `age`. We then use the `name` and `age` state properties in the `render` method to display a message on the screen.
+output:
+```
+Hello Earth          
+```
+<!-- In this example, we define a class-based component called `ExampleComponent`. We define a `constructor` method that calls the `super` method to initialize the component's `props` and sets the component's initial state to an object with two properties, `name` and `age`. We then use the `name` and `age` state properties in the `render` method to display a message on the screen. -->
 
 This is a very basic example, but it demonstrates how the constructor and super keywords are used to initialize a React class component's state.
+
+### React Component without Constructor 
+```javascript
+import React from 'react'; 
+import ReactDOM from 'react-dom'; 
+class Main extends React.Component { 
+  state = { 
+    planet: "Mars" 
+  } 
+  render() { 
+    return ( 
+      < h1 >Hello {this.state.planet}!</h1> 
+    ); 
+  } 
+} 
+ReactDOM.render(<Main />, document.getElementById('root')); 
+```
+output:
+```
+Hello Mars! 
+```
 
 ## Functional component
 In React, function-based components are a newer and more lightweight way to define components than class-based components. They are defined using JavaScript functions and can be considered as pure functions that take in props and return a React element.
@@ -312,3 +340,525 @@ That being said, function components are generally considered the better choice 
 |`Refs`|	Cannot use refs directly inside the component|	Can use refs directly inside the component|
 
 
+# State and Props
+## State:
+* In React, a "state" is an object that represents the internal data of a component. It is used to manage the component's dynamic behavior and to render the component with updated information.
+* The data is passed within the components only.State can be modified. State can be used only in class component. 
+
+* State can be changed by using the **setState()** method, which is provided by the React framework. When a component's state changes, React automatically re-renders the component with the updated information.
+
+* State is typically used to handle user input, control component behavior, and store component-specific data.
+
+* It's important to note that state is meant to be used only within the component it belongs to. It should not be passed down to child components as props, as this can make the code harder to maintain and debug.
+
+## Props:
+* React is a component-based library that divides the UI into little reusable pieces. In some cases, those components need to communicate (send data to each other) and the way to pass data between components is by using props.
+
+* “Props” is a special keyword in React, which stands for properties and is being used for passing data from one component to another.
+
+* But the important part here is that data with props are being passed in a uni-directional flow. (one way from parent to child)
+
+* Furthermore, props data is read-only, which means that data coming from the parent should not be changed by child components.
+
+### Props in class component
+In a class component in React, props can be accessed via the this.props object. Here's an example of how to use props in a class component:
+
+*#Greeting.js*
+```javascript
+import React from 'react';
+
+class Greeting extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}!</h1>;
+  }
+}
+
+export default Greeting;
+```
+In this example, the `Greeting` class extends React.Component and defines a `render` method that returns a greeting message with the value of the name `prop` passed to it.
+
+When the Greeting component is used in another component, the name prop can be passed as an attribute, like this:
+
+*#App.js*
+```javascript
+import React from 'react';
+import Greeting from './Greeting';
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <Greeting name="Alice" />
+        <Greeting name="Bob" />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+In this example, the App class extends React.Component and renders two instances of the Greeting component, each with a different name prop passed to it. When the Greeting component is rendered, it accesses the value of the name prop via this.props.name and uses it to render the greeting message.
+
+### Props in functional component
+Here's an example of how to use props in a functional component:
+
+*#Greeting.js*
+```javascript
+import React from 'react';
+
+function Greeting(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+
+export default Greeting;
+```
+In this example, the Greeting component is a simple functional component that receives a name prop and uses it to render a greeting message.
+
+When the Greeting component is used in another component, the name prop can be passed as an attribute, like this:
+
+*#App.js*
+
+```javascript
+import React from 'react';
+import Greeting from './Greeting';
+
+function App() {
+  return (
+    <div>
+      <Greeting name="Alice" />
+      <Greeting name="Bob" />
+    </div>
+  );
+}
+
+export default App;
+```
+
+In this example, the `App` component is rendering two instances of the `Greeting` component, each with a different name prop. When the Greeting component is rendered, it will receive the name prop as an argument to its function, and the value of the name prop will be used to render the greeting message.
+
+## Difference between State and Props
+
+|Property|	State|	Props|
+| :------| :-----| :-----|
+|`Source`|	Defined and managed within a component|	Passed from a parent component to a child|
+|`Mutability`|	Mutable and can be changed within a component	|Read-only and cannot be modified|
+|`Ownership`|	Owned by the component that defines it|	Owned by the parent component|
+|`Usage`|	Used to manage data within a component|	Used to pass data down the component tree|
+|`Updates`|	Changes trigger a re-render of the component	|Changes trigger a re-render of the component|
+|`DefaultValues`|	Must be initialized by the component itself	|Can have default values defined by the parent|
+|`Scope`|	Should only be accessed and modified within component|	Can be accessed by child components|
+
+## Update State and props using class component
+1. Updating State:
+
+* To update the state, you need to call the `setState` method.
+* setState method accepts an object that contains the new values of the state properties you want to update.
+* It's important to note that setState is asynchronous, so you should not rely on the current state or props values when updating state.
+Here's an example:
+```javascript
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0,
+    };
+  }
+
+  handleClick = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  render() {
+    return (
+      <div>
+        <p>Count: {this.state.count}</p>
+        <button onClick={this.handleClick}>Increment</button>
+      </div>
+    );
+  }
+}
+```
+2. Updating Props:
+
+* Props are read-only and cannot be directly modified by the component that receives them.
+* However, you can pass new props to a component by re-rendering it with new prop values.
+* To update props, you need to call the `setState` method of the parent component that passed the props to the child component.
+* When the parent component updates its state, it triggers a re-render of the child component with the new prop values.
+Here's an example:
+```javascript
+class ParentComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "John",
+    };
+  }
+
+  handleClick = () => {
+    this.setState({ name: "Mary" });
+  };
+
+  render() {
+    return (
+      <div>
+        <ChildComponent name={this.state.name} />
+        <button onClick={this.handleClick}>Change Name</button>
+      </div>
+    );
+  }
+}
+
+function ChildComponent(props) {
+  return <p>Hello {props.name}</p>;
+}
+```
+In summary, to update state, you call the setState method with the new state values. To update props, you update the parent component's state, which triggers a re-render of the child component with the new prop values.
+
+## Update State and props using functional component
+
+1. Update State
+* To update state in functional components, you need to use the useState hook provided by React.
+* The useState hook returns an array with two values: the current state value and a function that can be used to update the state value.
+* To update the state value, you call the function returned by the useState hook with the new state value.
+Here's an example:
+```javascript
+import React, { useState } from "react";
+
+function MyComponent() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = () => {
+    setCount(count + 1);
+  };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleClick}>Increment</button>
+    </div>
+  );
+}
+```
+2. Updating Props:
+
+* Props are read-only and cannot be directly modified by the component that receives them, regardless of whether it is a functional component or a class component.
+* To update props in functional components, you need to pass new prop values from the parent component.
+* When the parent component updates its state, it triggers a re-render of the child component with the new prop values.
+Here's an example:
+```javascript
+import React from "react";
+
+function ParentComponent() {
+  const [name, setName] = useState("John");
+
+  const handleClick = () => {
+    setName("Mary");
+  };
+
+  return (
+    <div>
+      <ChildComponent name={name} />
+      <button onClick={handleClick}>Change Name</button>
+    </div>
+  );
+}
+
+function ChildComponent(props) {
+  return <p>Hello {props.name}</p>;
+}
+```
+In summary, to update state in functional components, you use the useState hook to update the state value. To update props, you pass new prop values from the parent component.
+
+### >How to pass data from parent to child? 
+In React, you can pass data from a parent component to a child component using props. 
+
+*#Parent Component:*
+
+```javascript
+import React from 'react';
+import ChildComponent from './ChildComponent';
+
+function ParentComponent() {
+  const data = {
+    name: 'John Doe',
+    age: 25,
+    city: 'New York',
+  };
+
+  return (
+    <div>
+      <ChildComponent data={data} />
+    </div>
+  );
+}
+
+export default ParentComponent;
+```
+*#Child Component:*
+
+```javascript
+import React from 'react';
+
+function ChildComponent(props) {
+  const { data } = props;
+
+  return (
+    <div>
+      <p>Name: {data.name}</p>
+      <p>Age: {data.age}</p>
+      <p>City: {data.city}</p>
+    </div>
+  );
+}
+export default ChildComponent;
+```
+In this example, the ParentComponent passes the data object to the ChildComponent as a prop. The ChildComponent then receives the data object as a prop, and can access its properties using dot notation (data.name, data.age, data.city) within the function body.
+
+
+## Conditional Rendering
+* Conditional rendering is a technique in React that allows you to render different content or components based on certain conditions. 
+* It's a powerful way to make your components more dynamic and responsive to user input.
+
+```javascript
+
+import React, { useState } from 'react';
+
+function Example() {
+  const [showText, setShowText] = useState(false);
+
+  const handleClick = () => {
+    setShowText(!showText);
+  };
+
+  return (
+    <div>
+      <button onClick={handleClick}>Toggle Text</button>
+      {showText && <p>Some text to show when button is clicked</p>}
+    </div>
+  );
+}
+export default Example;
+```
+* In this example, we use the useState hook to create a boolean state variable called `showText`. The initial value is false, which means the text won't be shown initially.
+
+* We also define a function called `handleClick` that toggles the value of `showText` between true and false.
+
+* In the return statement, we render a button with an `onClick` event listener that calls handleClick when clicked. 
+* We also use a conditional statement to render the text only when `showText` is true. If `showText` is false, the text won't be rendered.
+
+* When the user clicks the button, the handleClick function is called, which toggles the value of showText. This causes the component to re-render, and the text will be shown or hidden based on the new value of showText.
+
+Note that the conditional statement used here is a shorthand way to write an if statement. The expression { showText && `<p>`Some text to show when button is clicked`</p>` } means "if showText is true, render the `<p>` element; otherwise, render nothing".
+
+**There are several techniques for performing conditional rendering in React:**
+
+1. If statements: You can use regular if statements to conditionally render content. For example:
+
+```javascript
+function MyComponent(props) {
+  if (props.isLoggedIn) {
+    return <p>Welcome back!</p>;
+  } else {
+    return <p>Please log in.</p>;
+  }
+}
+```
+2. Ternary operator: You can use a ternary operator to create a more concise if/else statement. For example:
+
+```javascript
+function MyComponent(props) {
+  return (
+    <div>
+      {props.isMember ? <p>Welcome, member!</p> : <p>Please sign up.</p>}
+    </div>
+  );
+}
+```
+3. Logical && operator: You can use the logical && operator to conditionally render content. For example:
+
+```javascript
+function MyComponent(props) {
+  return (
+    <div>
+      {props.hasData &&
+        <ul>
+          {props.data.map(item => <li key={item.id}>{item.name}</li>)}
+        </ul>
+      }
+    </div>
+  );
+}
+```
+4. Switch statement: If you have multiple conditions to check, you can use a switch statement to conditionally render content. For example:
+
+```javascript
+function MyComponent(props) {
+  switch (props.status) {
+    case 'loading':
+      return <p>Loading...</p>;
+    case 'error':
+      return <p>Error: {props.errorMessage}</p>;
+    case 'success':
+      return <p>Success!</p>;
+    default:
+      return null;
+  }
+}
+```
+
+# Life Cycle Methods:
+
+In React, lifecycle methods are special methods that allow you to perform actions at specific stages in a component's lifecycle. These methods are called automatically by React at different points in the component's life.
+
+There are three phases in the React component lifecycle: mounting, updating, and unmounting. Each of these phases has its own set of lifecycle methods.
+1. **Mounting:** The component is ready to mount in the browser DOM. This phase covers initialization from
+The phase covers initialization from
+* constructor()
+* render()
+* componentDidMount()
+2. **Updating:** In this phase, the component gets updated by, sending the new props and updating the state from setState()
+This phase covers initialization From
+The phase covers initialization from
+* shouldComponentUpdate()
+* render()
+* componentDidUpdate()
+3. **Unmounting:** In this phase, the component is not needed and gets unmounted from the browser DOM.
+The phase covers initialization from
+* componentWillUnmount()
+
+## Mounting:
+The mounting means to put elements into the DOM. React uses virtual DOM to put all the elements into the memory. It has four built-in methods to mount a component namely.
+1. Constructor()
+2. render()
+3. componentDidMount()
+
+**Constructor()**
+method is called when the component is initiated and it’s the best place to initialize our state. The constructor method takes props as an argument and starts by calling super(props) before anything else.
+```javascript
+import React, { Component } from 'react'
+
+export default class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      name: 'Constructor Method'
+    }
+  }
+  render() {
+    return (
+      <div>
+       <p> This is a {this.state.name}</p>
+      </div>
+    )
+  }
+}
+```
+**render()**
+* The render() function does not modify the component state, it returns the same result each time it’s invoked and is
+responsible for describing the view to be rendered to the browser window.
+* render() is called by React at various app stages, generally when the React component is first instantiated, or when there is a new update to the component state.
+
+> Note : render() will not be invoked if shouldComponentUpdate() returns false.
+
+**componentDidMount()**
+The most common and widely used lifecycle method is componentDidMount. This method is called after the component is rendered.
+
+```javascript
+import React, { Component } from 'react'
+
+export default class componentDidMountMethod extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      name: 'This name will change in 5 sec'
+    }
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({name: "This is a componentDidMount Method"})
+    }, 5000)
+
+  }
+  render() {
+    return (
+      <div>
+       <p>{this.state.name}</p>
+      </div>
+    )
+  }
+}
+```
+output:
+```
+This is a componentDidMount Method 
+```
+The above example will print This is a componentDidMount Method after 5 sec. This proves that the method is called after the component is rendered.
+
+## Updating
+This is the second phase of the React lifecycle. A component is updated when there is a change in state and props React basically has five built-in methods that are called while updating the components.
+1. shouldComponentUpdate()
+2. render()
+3. componentDidUpdate()
+
+**shouldComponentUpdate()**
+ is used when you want your state or props to update or not. This method returns a boolean value that specifies whether rendering should be done or not. The default value is true.
+ ```javascript
+ import React, { Component } from 'react'
+
+export default class shouldComponentUpdateMethod extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      name: 'shouldComponentUpdate Method'
+    }
+  }
+  shouldComponentUpdate() {
+    return false; //Change to true for state to update
+  }
+
+  componentDidMount(){
+    setTimeout(() => {
+      this.setState({name: "componentDidMount Method"})
+    }, 5000)
+  }
+  render() {
+    return (
+      <div>
+       <p>This is a {this.state.name}</p>
+      </div>
+    )
+  }
+}
+```
+**componentDidUpdate** method is called after the component is updated in the DOM. This is the best place in updating the DOM in response to the change of props and state.
+
+```javascript
+import React, { Component } from 'react'
+
+export default class componentDidUpdateMethod extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            name: 'from previous state'
+        }
+    }
+    componentDidMount(){
+        setTimeout(() => {
+            this.setState({name: "to current state"})
+          }, 5000)
+    }
+    componentDidUpdate(prevState){
+        if(prevState.name !== this.state.name){
+            document.getElementById('statechange').innerHTML = "Yes the state is changed"
+        }
+    }
+    render() {
+        return (
+            <div>
+                State was changed {this.state.name}
+                <p id="statechange"></p>
+            </div>
+        )
+    }
+}
+```
