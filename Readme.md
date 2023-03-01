@@ -949,3 +949,192 @@ export class Child extends Component{
 In the above example, I have created a simple toggle button which will show our `Child component` if the state is set to true. 
 
 So after clicking on the button an alert will popup displaying `This will unmount` The alert will popup because the component is about to be removed from the DOM which in our case is the Child component.
+
+## Events in react
+<p>Event handling essentially allows the user to interact with a webpage and do something specific when a certain event like a click or a hover happens. </p>
+<p>When the user interacts with the application, events are fired, for example, mouseover, key press, change event, and so on.</p>
+
+![Alt text](events.PNG)
+
+The actions to which JavaScript can respond are called events. Handling events with react is very similar to handling events in DOM elements.
+
+Below are some general events that you would see in and out when dealing with React-based websites:  
+
+* Clicking an element  
+* Submitting a form 
+* Scrolling page 
+* Hovering an element  
+* Loading a webpage 
+* Input field change 
+* User stroking a key 
+* Image loading 
+
+### DIFFERENCE BETWEEN HTML AND REACT EVENT HANDLING :
+React event handling is similar to HTML with some changes in syntax, such as:
+
+React uses camelCase for event names while HTML uses lowercase.
+
+Instead of passing a string as an event handler, we pass a function in React.
+
+Example:
+In HTML:
+```
+<button onclick="clickHandler()">
+  Clicked
+</button>
+```
+In React js
+```
+<button onClick={clickHandler}>
+  Clicked
+</button>
+```
+Also, like in HTML, we cannot return false to prevent default behavior; we need to use preventDefault to prevent the default behavior.
+
+In HTML
+```
+<form onsubmit="console.log('clicked'); 
+   return false">
+  <button type="submit">Submit</button>
+</form>
+```
+In React js
+```javascript
+function Form() {
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('Clicked');
+  }
+
+  return (
+    <form onSubmit={handleClick}>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+Here, e is a synthetic event. React events do not work exactly the same as native events. See the SyntheticEvent reference guide to learn more.
+
+When using React, you generally don’t need to call addEventListener to add listeners to a DOM element after it is created. Instead, just provide a listener when the element is initially rendered.
+
+**Changing state in onClick event listener:**
+
+```javascript
+function EventBind() {
+  const [steps, setSteps] = useState(0);
+  const clickHandler = () => {
+    setSteps(steps + 1);
+  };
+  return (
+    <>
+      <div>{steps}</div> 
+      <button onClick = {clickHandler}> Click </button>
+    </>
+  );
+}
+```
+**Let’s see some of the event attributes:**   
+
+* onmouseover: The mouse is moved over an element 
+* onmouseup: The mouse button is released 
+* onmouseout: The mouse  is moved off an element 
+* onmousemove: The mouse is moved 
+* Onmousedown: mouse button is pressed  
+* onload: A image is done loading 
+* onunload: Existing the page  
+* onblur: Losing Focus  on element  
+* onchange: Content of a field changes 
+* onclick: Clicking an object  
+* ondblclick: double clicking an object  
+* onfocus element getting a focus  
+* Onkeydown: pushing a keyboard key 
+* Onkeyup: keyboard key is released 
+* Onkeypress: keyboard key is pressed  
+* Onselect: text is selected 
+
+
+## What are synthetic events in ReactJS ?
+
+In order to work as a cross-browser application, React has created a wrapper same as the native browser in order to avoid creating multiple implementations for multiple methods for multiple browsers, creating common names for all events across browsers. Another benefit is that it increases the performance of the application as React reuses the event object.
+
+It pools the event already done hence improving the performance.
+
+
+ > `e.preventDefault()` prevents all the default behavior by the browser.
+
+> `e.stopPropagation()` prevents the call to the parent component whenever a child component gets called.
+
+Note: **Here ‘e’ is a synthetic event**, a cross-browser object. It is made with a wrapper around the actual event of the browser. 
+
+
+
+
+# Higher Order Compoent
+App.js 
+```javascript
+import React from 'react' 
+import ClickCounter from './ClickCounter' 
+import HoverComp from './HoverComp' 
+const App = () => { 
+  return ( 
+    <div> 
+    <ClickCounter /> 
+    <HoverComp /> 
+    </div> ) } 
+    
+export default App
+```
+ClickCounter.js 
+```javascript
+import React, { Component } from 'react' 
+import UpdatedComp from './UpdatedComp' 
+class ClickCounter extends Component { 
+  render() { 
+    const { count, incrementCount } = this.props 
+    console.log(incrementCount); 
+    return ( 
+      <button onClick={incrementCount}> Class {count} Times </button> 
+      ) 
+    } } 
+export default UpdatedComp(ClickCounter)
+```
+HoverComp.js 
+```javascript 
+import React, { Component } from 'react' 
+import UpdatedComp from './UpdatedComp' 
+export class HoverComp extends Component { 
+  render() { 
+    const { count, incrementCount } = this.props 
+    console.log(incrementCount); 
+    return ( 
+      <h2 onMouseOver={incrementCount}> Hovered {count} Times </h2> ) } }
+      
+export default UpdatedComp( HoverComp )
+```
+UpdatedComp.js
+```javascript
+import React,{Component} from "react"; 
+const UpdatedComp = (OriginalComponent) => { 
+  class NewComponent extends Component { 
+    constructor(props) { 
+      super(props) 
+      this.state = { count : 0 } 
+      } 
+      
+  incrementCount = () => { 
+    this.setState( { count: this.state.count+1 } ) 
+    } 
+    render() { 
+      return <OriginalComponent count={this.state.count} incrementCount={this.incrementCount} /> 
+      } 
+  } 
+return NewComponent 
+} 
+export default UpdatedComp
+```
+
+
+# **HOOKS**
+
+
+
