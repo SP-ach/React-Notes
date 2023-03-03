@@ -21,6 +21,7 @@ Its main goal is to describe how to get output or accomplish it
 
 * Finally, React can be used with other popular front-end libraries and frameworks, such as Redux for managing state and React Router for routing. It also has a large and active community, which provides helpful resources and support for developers.
 
+
 ## React Vs Angular Vs Vue
 
 
@@ -1134,7 +1135,483 @@ export default UpdatedComp
 ```
 
 
+
 # **HOOKS**
 
+* In React, Hooks are functions that allow developers to use state and other React features in functional components without the need for class components. 
+
+* Hooks were introduced in React version 16.8 to provide a simpler and more flexible way to manage state and side effects in React components.
+
+* In class component we use different Life cycle methods but in functional components we use hooks instead.
+
+* Hooks allows to use state and other features without writing a class. 
+
+**Benefits of using Hooks and Why Hooks was introduced ?**
+
+● In react class component, we split our work into different life-cycle methods like componentDidMount,
+componentDidUpdate and componentWillUnmount, but in hooks, we can do everything in a single hook called useEffect.
+
+● In the class component, we have to use this keyword and also we have to bind event listeners, which increases
+complexity. This is prevented in react functional components.
+
+**There is 2 rules to use Hooks.** 
+1. Only call Hooks at the top level:-<p>
+ Do not call hooks inside loops, conditions or nexted functions. Hooks should always be used at the top level of the react functions.
+
+2. Only call hooks from React functions:- <p>
+You can't call hooks from regular js functions instead you can call hooks from React functional component. 
+
+There are several types of hooks in React such as: 
+  * UseState
+  * useEffect
+  * useMemo
+  * useRef
+  * UseReducer
+  * UseCallback
+  * useContext
+  * useParams 
+  * useHistory 
 
 
+## UseState
+-> usestate hooks allows us to track state in a functional component.<p>
+-> State generally refers to data or properties that need to be tracking in an application.<p>
+-> usestate can be used to toggle between 2 values, usually true and false.
+
+**How to use it**
+
+first we have to import
+```
+import {usestate} from 'react'
+```
+then inside a function write
+```
+const[count.setCount]=usestate(0);
+        |         |
+        |         |
+     (current    (Update the 
+      state)     counter's state)
+```
+Example
+```javascript
+import React ,{useState} from "react";
+
+function App() {
+    const[Count,setCount]= useState(0);
+
+    return(
+        <>
+        <h1> count:{Count}</h1>
+        <button onClick={()=>setCount(Count+1)}>Click</button>
+        </>
+    )    
+}
+ export default App
+```
+
+In this example, we declare a state variable called count using the `useState` hook and initialize it to 0. We also declare a function called `setCount` which will be used to update the `count` state variable.
+
+## useEffect
+**->** The Effect Hook allows us to perform side effects (an action) in the function components. It does not use components lifecycle methods which are available in class components.
+
+**->** In other words, Effects Hooks are equivalent to componentDidMount(), componentDidUpdate(), and componentWillUnmount() lifecycle methods.
+
+**->** useEffect allows you to run side effects after the component has rendered, and also provides a way to clean up any side effects when the component is unmounted or updated. Here is an example of how to use useEffect:
+
+Side effects have common features which the most web applications need to perform, such as:
+
+* Updating the DOM,
+* Fetching and consuming data from a server API,
+* subscribing to events.
+
+-> useEffect accepts 2 arguments (callback,[dependency])
+
+> **The dependency array** is passed as the second argument to useEffect, and can contain one or more values. If the array is empty, the effect will only run once, when the component is mounted. If the array contains any values, the effect will re-run whenever one of those values changes.
+
+```javascript
+function App() {
+    const[Count,setCount]= useState(0);
+    const [num,setNum]= useState(0);
+
+    useEffect(()=>{
+        alert("clicked")
+    })
+
+    return(
+        <>
+        <h1> count:{Count}</h1>
+        <button onClick={()=>setCount(Count+1)}>Click</button>
+        <h1> Number:{num}</h1>        
+        <button onClick={()=>setNum(num+1)}>Click</button>
+        </>
+    )    
+}
+export default App
+```
+Here we declare 2 states `setCount` and `setNum`. and add counter to both of them . And we use useeffect and alert. so when one user click on the both buttons in every render one alert will appear. 
+
+Now lets use empty dependency
+```javascript
+  useEffect(()=>{
+        alert("clicked")
+    },[])
+```
+So we just add empty array dependency, now when ever the page is reload for the first time it will show alert. Then whenever we click on both buttons the alert will not popup.
+
+```javascript
+ useEffect(()=>{
+        alert("clicked")
+    },[num])
+```    
+Here we pass num state in the dependency.Now when we click on count state button the alert will not popup but whenever we click on num state button the alert will popup everytime we click on the button and simontaniouly the increment will occure.
+
+## useMemo
+useMemo is a React hook that allows you to memoize the result of a function, and recompute the result only when the dependencies of the function have changed.
+
+In simple terms, useMemo can be used to optimize the performance of your React components by avoiding unnecessary re-renders.
+
+```javascript
+function App() {
+  const [a, setA] = useState(0);
+  const [b, setB] = useState(0);
+
+  const result = useMemo(() => {
+    console.log('Calculating result...');
+    return a+b;
+  }, [a,b]);
+
+  return (
+    <div>
+      <p>Result: {result}</p>
+      <button onClick={()=>setA(a+1)}>Increment A</button>
+      <button onClick={()=>setB(b+1)}>Increment B</button>
+    </div>
+  );
+}
+```
+
+In this example, we use useMemo to compute the sum of a and b, and store the result in the result variable. The useMemo function takes a callback function as its first argument, which is the function that we want to memoize. 
+
+The second argument is an array of dependencies that useMemo will use to determine when to recompute the result.
+
+useMemo can be used for more complex computations as well. For example, if you have a component that does a lot of expensive calculations, you can use useMemo to avoid recalculating those values every time the component re-renders.
+
+> In summary, useMemo is a React hook that can be used to memoize the result of a function and optimize the performance of your components. By avoiding unnecessary re-renders, you can create faster and more efficient React applications.
+
+## useCallback
+
+useCallback will return a memoized version of the callback that only changes if one of the dependencies has changed. This is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
+
+In simple terms, useCallback can be used to optimize the performance of your React components by avoiding unnecessary re-renders of child components.
+
+```javascript
+import React, { useState, useCallback } from 'react';
+
+function MyComponent(props) {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleClick}>Increment Count</button>
+      <ChildComponent handleClick={handleClick} />
+    </div>
+  );
+}
+
+function ChildComponent(props) {
+  return (
+    <div>
+      <p>Child component</p>
+      <button onClick={props.handleClick}>Increment Count</button>
+    </div>
+  );
+}
+
+export default MyComponent;
+```
+
+In this example, we use useCallback to memoize the `handleClick` function that is passed as a prop to the ChildComponent. The useCallback function takes a callback function as its first argument, which is the function that we want to memoize. The second argument is an array of dependencies that useCallback will use to determine when to re-create the function.
+
+In this case, the handleClick function is only re-created when the count state changes. This means that if the handleClick function is passed as a prop to a child component, and that child component re-renders, the handleClick function will not be re-created unless the count state changes.
+
+### Advantage:
+useCallback can be useful when you have a function that is passed down to multiple child components, and you want to avoid unnecessary re-renders of those components. By memoizing the function, you can ensure that it is only re-created when necessary, which can improve the performance of your React components.
+
+> In summary, useCallback is a React hook that can be used to memoize a function and optimize the performance of your components. By avoiding unnecessary re-creation of functions, you can create faster and more efficient React applications.
+
+
+## useRef
+useRef is a React hook that allows you to create a mutable reference to an element or value, which persists across re-renders of your component.
+
+In simple terms, useRef can be used to store values that don't change often and are not used for rendering purposes, such as DOM elements, timers, or any other mutable value.
+
+```javascript
+import ReactDOM from "react-dom/client"; 
+function UseRef() { 
+  const [inputValue, setInputValue] = useState(""); 
+  const count = useRef(0); 
+  useEffect(() => { 
+    count.current = count.current + 1; }); 
+    return ( 
+      <> 
+        <input type="text" 
+        value={inputValue} onChange={(e) => 
+        setInputValue(e.target.value)} /> 
+        <h1>Render Count: {count.current}</h1> 
+      </> ); 
+      } 
+      
+export default UseRef;
+```
+
+## useReducer
+It does very similiar to setState, It's a different way to manage state using Redux Pattern. Instead of updating the state directly, we dispatch actions, that go to a reducer function, and this function figure out, how to compute the next state.
+
+```javascript
+ function App() { 
+  const initial = 0; 
+  const reducer = (state, action) => { 
+    switch (action) { 
+      case "add": return state + 1; 
+      case "sub": return state - 1; 
+      case "reset": return 0; 
+      default: return 0; 
+    } 
+  } 
+  const [value, dispatch] = useReducer(reducer, initial) return ( 
+    <div> 
+    <h2>{value}</h2> 
+    <button onClick={() => dispatch("add")}>Add</button> 
+    <button onClick={() => dispatch("sub")}>subtract</button> 
+    <button onClick={() => dispatch("reset")}>reset</button> 
+    </div> 
+    ); 
+  }
+```
+
+  # Routing
+  ## What is a React Router ?
+* React Router is a powerful routing library built on top of React that helps to flow your application incredibly quickly, while
+keeping the URL in sync with what's being displayed on the page.
+
+* When a user types a specific URL into the browser, and if this URL path matches any 'route' inside the router file, the user
+will be redirected to that particular route.
+
+* React Router Dom is used to build applications that have many pages or components but the page is never refreshed
+instead the content is dynamically fetched based on the URL
+
+**Q.What is the difference between react-router and react-router-dom ?**
+
+In React Router v4, the React Router was broken into two: react-router and react-router-dom. react-router is the core, and
+react-router-dom is the core plus the React Router elements such as
+`<BrowserRouter>` and `<NavLink>`
+Since react-router-dom is like a super-set of react-router, you only need to import react-router-dom.
+
+### **What is BrowserRouter ?**
+BrowserRouter is responsible for understanding the url and then going ahead and ensuring that ui that we have or component we have is as per that particular url
+
+Installation
+```
+npm i react-router-dom
+```
+### **What is Routes ?**
+The Routes component is used to define the routes for your application. It takes one or more Route components as its children and renders the first Route that matches the current URL. If none of the Route components match the current URL, the Routes component renders nothing.
+
+### **What is Route ?**
+
+The Route component is used to define a single route in your application. It takes two props: path and element. The path prop specifies the URL pattern that the Route should match, and the element prop specifies the component that should be rendered when the Route matches.
+
+### **What is path ?**
+
+The path prop is used to specify the URL pattern that a Route should match. It can be a string or a regular expression that matches the desired URL pattern. For example, if you want to match the URL /about with a Route, you would set the path prop to "/about".
+
+### **What is Link in React ?**
+Link is a primary way to allow users to navigate around your application from page to another without loading
+The difference between link and anchor tag is that
+
+● anchor tag when we navigate to another page there is a loading happen
+
+● Link when we navigate to another page through link the page will not load.
+
+**How to use links in React ?**
+
+Initially we are on Home page , on click of Home we move to about page and there is a change in url(localhost:3000/about)
+
+
+Here lets take one simple example how to perform routing .
+We are taking 3 pages Home, About, Contact. And i place them in ul tag as a link so that whwnever we click on particular link it will redirect to that page.
+
+
+*#index.js*
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+
+    <App />
+    
+    </BrowserRouter>
+
+  </React.StrictMode>
+);
+```
+
+*#App.js*
+```javascript
+import './App.css';
+import Home from './component/Home';
+import About from './component/About';
+import Contact from './component/Contact';
+import {Routes,Route,Link} from 'react-router-dom'
+
+function App() {
+  return (
+    <>
+     <ul>
+    <li><Link to="/">Home</Link></li>
+    <li><Link to="/about">About</Link></li>
+    <li><Link to="/contact">Contact</Link></li>
+    </ul>
+  
+    <Routes>
+      <Route path="/"  element={<Home/>}/>
+      <Route path="/about"  element={<About/>} />
+      <Route path="/contact"  element={<Contact/>}/>
+    </Routes>
+    </>
+  );
+}
+export default App;
+```
+
+*./component/Home.js*
+
+```javascript
+import React from "react"
+
+const Home=()=>{
+    return (
+        <>
+        Home
+        </>
+    )
+}
+```
+export default Home
+
+*./component/About.js*
+
+```javascript
+import React from "react"
+
+const About=()=>{
+    return (
+        <>
+        About
+        </>
+    )
+}
+export default About
+```
+
+*./component/Contact.js*
+
+```javascript
+import React from 'react'
+
+const Contact = () => {
+  return (
+    <div>Contact</div>
+  )
+}
+
+export default Contact
+```
+
+
+
+## Dynamic params in Routing
+
+Dynamic parameters in routing refer to a feature in React Router that allows you to define URL patterns with variable segments. This is useful when you want to create routes that can handle a wide range of inputs without having to define a separate route for each one.
+
+Here's a simple example of how to use dynamic parameters in React Router:
+
+// App.js
+```javascript
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import User from './User';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/users/:id" element={<User />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
+```
+
+// Home.js
+```javascript
+import { Link } from 'react-router-dom';
+
+function Home() {
+  return (
+    <div>
+      <h1>Home</h1>
+      <ul>
+        <li><Link to="/users/1">User 1</Link></li>
+        <li><Link to="/users/2">User 2</Link></li>
+        <li><Link to="/users/3">User 3</Link></li>
+      </ul>
+    </div>
+  );
+}
+
+export default Home;
+```
+
+// User.js
+
+```javascript
+
+import { useParams } from 'react-router-dom';
+
+function User() {
+  const { id } = useParams();
+
+  return (
+    <div>
+      <h1>User {id}</h1>
+      <p>This is the page for User {id}.</p>
+    </div>
+  );
+}
+
+export default User;
+```
+
+In this example, we have three components:
+
+* App: The top-level component that defines the routing for the app using Routes and Route.
+* Home: A simple component that displays a list of links to different user pages.
+* User: A component that displays information about a specific user, based on the dynamic parameter id in the URL.
+
+When a user clicks on a link to a user page, React Router will match the URL to the Route for User and pass the id parameter as a prop. The User component then uses the useParams hook to extract the id parameter and render information specific to that user.
