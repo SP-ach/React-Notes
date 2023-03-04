@@ -1,4 +1,6 @@
-# REACT NOTES 
+# **REACT NOTES** 
+
+## DAY-1
 
 ## What is React.JS?
 
@@ -348,6 +350,9 @@ That being said, function components are generally considered the better choice 
 |`Code-Reusability`|	Can be easily reused in other components	|Cannot be easily reused in other components|
 |`Testing`|	Easier to test because they are pure functions|	More difficult to test because they have state and lifecycle methods|
 |`Refs`|	Cannot use refs directly inside the component|	Can use refs directly inside the component|
+
+
+## *DAY-2*
 
 
 # State and Props
@@ -716,6 +721,8 @@ function MyComponent(props) {
 }
 ```
 
+## *DAY-4*
+
 # Life Cycle Methods:
 
 In React, lifecycle methods are special methods that allow you to perform actions at specific stages in a component's lifecycle. These methods are called automatically by React at different points in the component's life.
@@ -951,6 +958,8 @@ In the above example, I have created a simple toggle button which will show our 
 
 So after clicking on the button an alert will popup displaying `This will unmount` The alert will popup because the component is about to be removed from the DOM which in our case is the Child component.
 
+## *DAY-6*
+
 ## Events in react
 <p>Event handling essentially allows the user to interact with a webpage and do something specific when a certain event like a click or a hover happens. </p>
 <p>When the user interacts with the application, events are fired, for example, mouseover, key press, change event, and so on.</p>
@@ -1134,7 +1143,7 @@ return NewComponent
 export default UpdatedComp
 ```
 
-
+## *DAY-8*
 
 # **HOOKS**
 
@@ -1351,8 +1360,8 @@ useRef is a React hook that allows you to create a mutable reference to an eleme
 In simple terms, useRef can be used to store values that don't change often and are not used for rendering purposes, such as DOM elements, timers, or any other mutable value.
 
 ```javascript
-import ReactDOM from "react-dom/client"; 
-function UseRef() { 
+
+function App() { 
   const [inputValue, setInputValue] = useState(""); 
   const count = useRef(0); 
   useEffect(() => { 
@@ -1366,8 +1375,17 @@ function UseRef() {
       </> ); 
       } 
       
-export default UseRef;
+export default App;
 ```
+In the example,
+The component has a local state variable called `inputValue` that is initialized with an empty string using useState. `setInputValue` is a function used to update the value of `inputValue` state variable when the input field changes.
+
+The component also has a count variable initialized with a value of 0 using the `useRef` hook. count is used to keep track of the number of times the component has been rendered.
+
+The useEffect hook is used to update the value of count variable whenever the component is rendered. The useEffect hook runs after the component has been rendered, and it updates the count variable by incrementing it by 1.
+
+The component returns two elements: an input field and an h1 element that displays the current value of count. Whenever the input field is changed, the setInputValue function is called, which updates the inputValue state variable and causes the component to re-render. When the component is re-rendered, the useEffect hook runs and updates the value of count to reflect the new render count.
+
 
 ## useReducer
 It does very similiar to setState, It's a different way to manage state using Redux Pattern. Instead of updating the state directly, we dispatch actions, that go to a reducer function, and this function figure out, how to compute the next state.
@@ -1393,6 +1411,21 @@ It does very similiar to setState, It's a different way to manage state using Re
     ); 
   }
 ```
+In this example,
+The component initializes a constant `initial` with a value of 0. This is the initial value for the state managed by the `useReducer` hook. The component also defines a reducer function, which takes in the current state and an action object, and returns a new state based on the action.
+
+The reducer function used in this component has a switch statement that checks the type of action passed in, and returns the updated state based on the action. In this case, there are three possible actions: "add", "sub", and "reset". 
+
+If the action is "add", the reducer returns the current state plus one. If the action is "sub", the reducer returns the current state minus one. If the action is "reset", the reducer returns the initial value of 0.
+
+The `useReducer` hook is used to initialize a state variable called value with the initial value of 0, and a `dispatch` function that allows you to dispatch actions to the reducer. The `useReducer` hook takes two arguments: the reducer function and the initial state value.
+
+The component returns a `div` that contains an `h2` element that displays the current value of `value`, and three buttons that dispatch the corresponding actions to the reducer when clicked. 
+
+When the buttons are clicked, the `dispatch` function is called with the appropriate action object, and the useReducer hook updates the state based on the action. The h2 element is re-rendered with the updated value of value.
+
+
+## *DAY-9*
 
   # Routing
   ## What is a React Router ?
