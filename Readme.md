@@ -1,3 +1,6 @@
+**React Roadmap doc:**
+ https://docs.google.com/spreadsheets/d/15SA5agTJ-kksNk3xyVXWx7DyptlyAQiDqwVueUkpVuE/edit#gid=0
+
 # **REACT NOTES** 
 
 ## DAY-1
@@ -1648,3 +1651,5 @@ In this example, we have three components:
 * User: A component that displays information about a specific user, based on the dynamic parameter id in the URL.
 
 When a user clicks on a link to a user page, React Router will match the URL to the Route for User and pass the id parameter as a prop. The User component then uses the useParams hook to extract the id parameter and render information specific to that user.
+
+
