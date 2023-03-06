@@ -1780,7 +1780,7 @@ Passing down props through multiple layers of components can affect the performa
 
 To overcome these drawbacks, alternative state management solutions such as **context, Redux, or GraphQL** can be used to manage the state and data more efficiently and avoid excessive props drilling.
 
-Example 2: With Usecontext hook and Context API
+### Example 2: With Usecontext hook and Context API
 
 The problem with Prop Drilling is that whenever data from the Parent component will be needed, it would have to come from each level, Regardless of the fact that it is not needed there and simply needed in last.
 
@@ -1856,4 +1856,98 @@ export default Parent;
 ![Alt text](a.png)
 
 Same output but this time instead of passing data through each level, It is directly consumed in the component required using useContext Hook.
+
+
+## Dynamic Context Example 
+
+**->** Here we are taking one simple example where in dynamic context we are using some movie names , images and rating.
+
+
+
+//MovieContext.js
+
+```javascript
+import React from 'react';
+
+const MovieContext = React.createContext();
+
+export default MovieContext;
+```
+//MovieProvider.js
+
+```javascript
+import React, { useState } from 'react';
+import MovieContext from './MovieContext';
+
+const MovieProvider = (props) => {
+  const [movies, setMovies] = useState([
+    { name: "The Shawshank Redemption", image: "shawshank.jpg", rating: 9.3 },
+    { name: "The Godfather", image: "godfather.jpg", rating: 9.2 },
+    { name: "The Dark Knight", image: "darkknight.jpg", rating: 9.0 }
+  ]);
+
+  return (
+    <MovieContext.Provider value={{ movies }}>
+      {props.children}
+    </MovieContext.Provider>
+  );
+}
+
+export default MovieProvider;
+```
+//MovieList.js
+
+```javascript
+import React, { useContext } from 'react';
+import MovieContext from './MovieContext';
+
+const MovieList = () => {
+  const { movies } = useContext(MovieContext);
+
+  return (
+    <div>
+      {movies.map(movie => (
+        <div key={movie.name}>
+          <img src={movie.image} alt={movie.name} />
+          <h2>{movie.name}</h2>
+          <p>Rating: {movie.rating}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default MovieList;
+```
+//App.js
+
+```javascript
+import React from 'react';
+import MovieProvider from './MovieProvider';
+import MovieList from './MovieList';
+
+const App = () => {
+  return (
+    <MovieProvider>
+      <MovieList />
+    </MovieProvider>
+  );
+}
+
+export default App;
+```
+
+Output:
+
+![movies](b.png)
+
+In this example, we create a separate file for each component.
+
+The `MovieContext` component is responsible for creating the context object using the `React.createContext()` method.
+
+The `MovieProvider` component defines the state variable movies and passes it down to its children components through the context object using the `MovieContext.Provider` component.
+
+The `MovieList` component retrieves the movies data from the context object using the `useContext()` hook and maps over the array to render a list of movie items.
+
+Finally, the App component renders the MovieProvider component as a parent of the MovieList component, so that the MovieList component can access the movies data from the context object.
 
