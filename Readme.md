@@ -1653,3 +1653,207 @@ In this example, we have three components:
 When a user clicks on a link to a user page, React Router will match the URL to the Route for User and pass the id parameter as a prop. The User component then uses the useParams hook to extract the id parameter and render information specific to that user.
 
 
+## State Uplifing
+
+* Often there will be a need to share state between different components. The common approach to share state between two components is to move the state to common parent of the two components. This approach is called as lifting state up in React.js
+
+* With the shared state, changes in state reflect in relevant components simultaneously. This is a single source of truth for shared state components.
+
+![Alt text](lift.png)
+
+## Props drilling
+
+* It is the process by which you pass data from one component of the React Component tree to another by going through other components that do not need the data but only help in passing it around.
+
+* In a React component hierarchy, props can be passed down from a parent component to its child component, and then to its child's child component, and so on. When a component deep down in the hierarchy needs to access data or functionality that is only available in a higher-level component, the data or functionality must be passed down through all the intermediate components via props. This process is known as **"props drilling".**
+
+![Alt text](props.png)
+
+Example 1: (With Props drilling)
+In this below example we are taking one Parent.js and we need to pass some datas from parent to ChildC. For that we need to pass data from parent to ChildA then ChildA to ChildB and then ChildB to ChildC.
+
+
+// App.js
+
+```javascript
+import Parent from "./woUsecontext/Parent";
+  
+const App=()=> {
+  return (
+    <div className="App">
+      <Parent />
+    </div>
+  );
+}
+export default App
+```
+// Parent.js
+```javascript
+import React, { useState } from "react";
+import ChildA from "./ChildA";
+
+const Parent = () => {
+    const [fName, setfName] = useState("SP");
+    const [lName, setlName] = useState("Acharya");
+  return (
+    <>
+      <div>This is a Parent component</div>
+      <br />
+      <ChildA fName={fName} lName={lName} />
+    </>
+  )
+}
+
+export default Parent
+```
+//ChildA.js
+```javascript
+import React from 'react'
+import ChildB from './ChildB';
+
+function ChildA({ fName, lName }) {
+    return (
+      <>
+        This is ChildA Component.
+        <br />
+        <ChildB fName={fName} lName={lName} />
+      </>
+    );
+  }
+
+export default ChildA
+```
+// ChildB.js
+```javascript
+import React from 'react'
+import ChildC from './ChildC';
+
+function ChildB({ fName, lName }) {
+    return (
+      <>
+        This is ChildB Component.
+        <br />
+        <ChildC fName={fName} lName={lName} />
+      </>
+    );
+  }
+
+export default ChildB
+```
+//ChildC.js
+```javascript
+import React from 'react'
+
+function ChildC({ fName, lName }) {
+    return (
+      <>
+        This is ChildC component.
+        <br />
+        <h3> Data from Parent component is as follows:</h3>
+        <h4>{fName}</h4>
+        <h4>{lName}</h4>
+      </>
+    );
+  }
+
+export default ChildC
+```
+Output:
+
+![Alt text](a.png)
+
+Demonstrating the Data initialized in Parent, Needed in last component(Child C) have to passed down each level known as Prop Drilling.
+
+Props drilling can have several drawbacks, including:
+
+1. Prop pollution: 
+
+As props are passed down through multiple layers of components, it can result in the accumulation of unnecessary or irrelevant props in components that don't actually need them. This can make the code more complex and harder to maintain.
+
+2. Tight coupling: 
+
+Passing down props through multiple layers of components can lead to tight coupling between components. If a parent component needs to be modified, it may require changes to be made in all the child components that rely on its props. This can make it harder to refactor or modify the code in the future.
+
+3. Performance: 
+
+Passing down props through multiple layers of components can affect the performance of the application. If the application has a large component tree with many nested components, it can slow down the rendering process and affect the user experience.
+
+To overcome these drawbacks, alternative state management solutions such as **context, Redux, or GraphQL** can be used to manage the state and data more efficiently and avoid excessive props drilling.
+
+Example 2: With Usecontext hook and Context API
+
+The problem with Prop Drilling is that whenever data from the Parent component will be needed, it would have to come from each level, Regardless of the fact that it is not needed there and simply needed in last.
+
+A better alternative to this is using useContext hook. The useContext hook is based on Context API and works on the mechanism of Provider and Consumer. Provider needs to wrap components inside Provider Components in which data have to be consumed. Then in those components, using the useContext hook that data needs to be consumed.
+
+// App.js
+
+```javascript
+import Parent from "./woUsecontext/Parent";
+  
+const App=()=> {
+  return (
+    <div className="App">
+      <Parent />
+    </div>
+  );
+}
+export default App
+```
+//Parent.js
+
+```javascript
+import React, { useState, useContext } from "react";
+
+let context = React.createContext(null);
+function Parent() {
+const [fName, setfName] = useState("SP");
+const [lName, setlName] = useState("Acharya");
+return (
+	<context.Provider value={{ fName, lName }}>
+	<div>This is a Parent component</div>
+	<br />
+	<ChildA />
+	</context.Provider>
+);
+}
+
+function ChildA() {
+return (
+	<>
+	This is ChildA Component.
+	<br />
+	<ChildB />
+	</>
+);
+}
+
+function ChildB() {
+return (
+	<>
+	This is ChildB Component.
+	<br />
+	<ChildC />
+	</>
+);
+}
+
+function ChildC() {
+const { fName, lName } = useContext(context);
+return (
+	<>
+	This is ChildC component.
+	<br />
+	<h3> Data from Parent component is as follows:</h3>
+	<h4>{fName}</h4>
+	<h4>{lName}</h4>
+	</>
+);
+}
+
+export default Parent;
+```
+![Alt text](a.png)
+
+Same output but this time instead of passing data through each level, It is directly consumed in the component required using useContext Hook.
+
