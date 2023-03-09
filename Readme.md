@@ -1951,3 +1951,333 @@ The `MovieList` component retrieves the movies data from the context object usin
 
 Finally, the App component renders the MovieProvider component as a parent of the MovieList component, so that the MovieList component can access the movies data from the context object.
 
+
+# State Management
+
+## The Four Kinds of React State to Manage :
+When we talk about state in our applications, it’s important to be clear about what types of state actually matter.
+
+There are four main types of state you need to properly manage in your React apps:
+
+1. Local state
+2. Global state
+3. Server state
+4. URL state
+
+
+
+### **Local (UI) state** – 
+* Local state is data we manage in one or another component.
+* Local state is most often managed in React using the useState hook.
+* For example, local state would be needed to show or hide a modal component or to track values for a form component, such as form submission, when the form is disabled and the values of a form’s inputs.
+
+### **Global (UI) state** – 
+* Global state is data we manage across multiple components.
+* Global state is necessary when we want to get and update data anywhere in our app, or in multiple components at least.
+* A common example of global state is authenticated user state. If a user is logged into our app, it is necessary to get and change their data throughout our application.
+* Sometimes state we think should be local might become global.
+
+### **Server state** – 
+* Data that comes from an external server that must be integrated with our UI state.
+* Server state is a simple concept, but can be hard to manage alongside all of our local and global UI state.
+* There are several pieces of state that must be managed every time you fetch or update data from an external server, including loading and error state.
+* Fortunately there are tools such as SWR and React Query that make managing server state much easier.
+
+### **URL state** – 
+* Data that exists on our URLs, including the pathname and query parameters.
+
+* URL state is often missing as a category of state, but it is an important one.
+* In many cases, a lot of major parts of our application rely upon accessing URL state. Try to imagine building a blog without being able to fetch a post based off of its slug or id that is located in the URL!
+
+
+# **REDUX Toolkit**
+
+Redux Toolkit is a set of libraries and tools that make it easier to manage state in React applications using Redux. 
+
+It provides a simpler API for creating and managing Redux stores, includes helpful development tools, improves performance optimization, improves type safety, and provides a clear and consistent architecture for managing application state. 
+
+Overall, Redux Toolkit helps streamline the development process and improve the performance, maintainability, and scalability of your React applications that use Redux.
+
+> **Redux is a global state** 
+
+> **You may need Redux if you don't want to do props drilling (passing props too deep).**
+
+
+![redux](https://www.ceos3c.com/wp-content/uploads/2022/01/redux-toolkit-2.gif)
+
+**Here are some advantages of using Redux Toolkit in React:**
+
+I. Simplified Code:-
+
+ Redux Toolkit provides a simplified API for creating and managing Redux stores. It also includes a number of utilities for common Redux tasks, such as creating reducers, handling asynchronous actions, and creating immutable state.
+
+II. Improved Developer Experience:-
+
+ Redux Toolkit comes with helpful development tools, including an integration with the Redux DevTools Extension, which makes it easier to debug and inspect the state of your application.
+
+III. Performance Optimization: -
+
+Redux Toolkit includes a utility called "createSlice" that automatically generates optimized Redux reducer functions based on the initial state and action types you provide. This can help improve performance by reducing the amount of unnecessary work done by your reducers.
+
+IV. Improved Type Safety:-
+
+ Redux Toolkit comes with built-in TypeScript types, which can help catch errors at compile time rather than runtime. This can improve the stability and maintainability of your codebase.
+
+V. Scalability:-
+
+ Redux Toolkit makes it easier to manage complex Redux applications by providing a clear and consistent architecture for managing application state. This can help you scale your application as it grows and becomes more complex.
+
+
+Here is a simple example of how to implement and what are ther step of redux.
+
+**->** Firstly Install the required packages:-
+
+  Install the redux and react-redux packages along with redux-toolkit package in your React application using npm.
+```javascript
+npm install redux react-redux @reduxjs/toolkit
+```
+
+
+**->** reate Redux reducers:-
+
+ Create your reducers using the `createSlice` function provided by Redux Toolkit. This function generates a `reducer` function for you, based on the initial state and the actions you define.
+
+
+// countSlice.js
+```javascript
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = 0;
+
+const countSlice = createSlice({
+  name: 'count',
+  initialState,
+  reducers: {
+    add: (state, { payload }) => state += payload,
+    reset: (state) => state = initialState
+  }
+});
+
+export const { add, reset } = countSlice.actions;
+export default countSlice.reducer;
+```
+const countSlice = createSlice({...}): This line uses the `createSlice` function to define a new slice of the store called "count". The `createSlice` function takes an object with several properties:
+
+name: A string name for the slice.
+
+initialState: The initial state of the slice.
+
+reducers: An object with functions that define how the slice should respond to actions that are dispatched to the store.
+reducers: {...}: This section defines the two reducers for the "count" slice:
+
+~ add: This reducer takes the current state and a `payload` argument (which is the value passed to the action) and returns a new state with the `payload` value added to it.
+
+> **Payload:-** While action types allow you tell your reducer what action it should take, the payload is the data that your reducer will use to update the state. This lesson shows you how to pass an action payload along with your action type to update the state.
+
+~ reset: This reducer takes the current state and sets it back to the initial state.
+
+*export const { add, reset } = countSlice.actions;:-*
+
+ This line exports the add and reset action creators from the "count" slice. These action creators are functions that return action objects with a type property and a payload property (if applicable).
+
+*export default countSlice.reducer;:-*
+ This line exports the "count" slice's reducer function, which takes the current state and an action object and returns the new state.
+
+
+**->** Create a Redux store:-
+
+ In your store.js file, create a Redux store using the `configureStore` function provided by Redux Toolkit. This function takes an object with a reducer property and an optional middleware property.
+
+ > **configureStore** is only accepting one parameter, which is an Object, which is called ConfigureStoreOptions.
+
+// store.js
+```javascript
+import { configureStore } from '@reduxjs/toolkit';
+import countReducer from './countSlice';
+
+const store = configureStore({
+  reducer: {
+    count: countReducer
+  }
+});
+
+export default store;
+```
+import countReducer from './countSlice';: This line imports the "count" slice's reducer function from the countSlice.js file.
+
+*const store = configureStore({...}):-*
+
+ This line uses the `configureStore` function to create a new Redux store. The `configureStore` function takes an object with several properties:
+
+> **reducer**: An object with key-value pairs where the keys are the names of the slices in the store and the values are the reducer functions for those slices.
+
+reducer: {...}: This section defines the reducers for the store. In this case, there is only one slice called "count", so the `countReducer` function is associated with it.
+
+**->**This code sets up the Redux store for use in the React app:
+
+ In index.js file, import Provider from react-redux. The Provider component from the react-redux library is used to provide the Redux store to the app. The store object is imported from the ./store file.
+
+// index.js
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+import { Provider } from 'react-redux';
+import store from './store';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+```
+
+**->** Connect Redux to React components:
+
+ Use the `useSelector` and `useDispatch` hooks provided by the react-redux package to connect your React components to the Redux store.
+
+// App.js
+```javascript
+import { useDispatch, useSelector } from "react-redux";
+import { add, reset } from "./countSlice";
+
+function App() {
+  const dispatch = useDispatch();
+  const { count } = useSelector(state => state);
+
+  function addOneToCount() {
+    dispatch(add(1));
+  }
+
+  function resetCount() {
+    dispatch(reset());
+  }
+
+  return (
+    <div>
+      Count: {count}
+      <button onClick={addOneToCount}>
+        +1
+      </button>
+      <button onClick={resetCount}>
+        RESET
+      </button>
+    </div>
+  )
+}
+
+export default App
+```
+This code defines the App component, which displays the current count and two buttons to add to the count and reset it. The `useSelector` hook is used to extract the count state from the Redux store. The `useDispatch` hook is used to dispatch the add and reset actions to modify the count state.
+
+> **useSelector:** 
+* useSelector and useDispatch are two hooks provided by the react-redux library that are commonly used in conjunction with Redux Toolkit to manage state in a React application.
+* useSelector is used to select data from the Redux store. It takes a function as an argument that defines how to extract the data from the store, and returns the selected data.
+
+>**useDispatch:** 
+* useDispatch is used to dispatch actions to the Redux store. It returns a reference to the dispatch function.
+* if we want to modify the global state we need to useDispatch and the action that we already created in slice.
+
+
+### Summary:
+we have 6 steps to implement the Redux Toolkit to our react project:
+
+* Install Redux Toolkit and React-Redux Packages
+* Create a Redux Store
+* Include the Redux Store to App.js parent
+* Create a Redux State Slice
+* Add Slice Reducers to the Store
+* Implementing useSelector and useDispatch in React Components
+
+
+## Redux Thunk:
+
+* The most common use case for Redux Thunk is for communicating asynchronously with an external API to retrieve or save data. Redux Thunk makes it easy to dispatch actions that follow the lifecycle of a request to an external API.
+
+* Redux Thunk is middleware that allows you to return functions, rather than just actions, within Redux. This allows for delayed actions, including working with promises.
+
+* One of the main use cases for this middleware is for handling actions that might not be synchronous, for example, using axios to send a GET request. 
+
+* Redux Thunk allows us to dispatch those actions asynchronously and resolve each promise that gets returned.
+
+
+# Axio Vs Fetch
+
+**Axios :**
+
+* Axios is a Javascript library used to make HTTP requests from node.js or XMLHttpRequests from the browser and it supports the Promise API that is native to JS ES6. 
+* It can be used intercept HTTP requests and responses and enables client-side protection against XSRF. It also has the ability to cancel requests.   EX: axios.get('url') .then((response) => 
+
+**Fetch:**
+
+* The Fetch API provides a fetch() method defined on the window object. It also provides a JavaScript interface for accessing and manipulating parts of the HTTP pipeline (requests and responses). 
+* The fetch method has one mandatory argument- the URL of the resource to be fetched. This method returns a Promise that can be used to retrieve the response of the request. EX:: fetch('path-to-the-resource-to-be-fetched') .then((response) => { 
+  
+  
+  
+|Axios |Fetch|
+|:-----|:----|
+|Axios has url in request object. |Fetch has no url in request object.|
+|Axios is a stand-alone third party package that can be easily installed.| Fetch is built into most modern browsers; no installation is required as such.|
+|Axios enjoys built-in XSRF protection.| Fetch does not. |
+|Axios uses the data property. |Fetch uses the body property. |
+|Axios’ data contains the object.| Fetch’s body has to be stringified.|
+|Axios request is ok when status is 200 and statusText is ‘OK’. |Fetch request is ok when response object contains the ok property. |
+|Axios performs automatic transforms of JSON data. |Fetch is a two-step process when handling JSON data- first, to make the actual request; second, to call the .json() method on the response. |
+|Axios allows cancelling request and request timeout.| Fetch does not.|
+|Axios has the ability to intercept HTTP requests. |Fetch, by default, doesn’t provide a way to intercept requests. |
+|Axios has built-in support for download progress. |Fetch does not support upload progress.|
+
+
+### axios and fetch are both used for making HTTP requests to servers, but they have some differences. Here are some of the main differences:
+
+1. **Syntax:** axios uses a simple syntax and provides a higher level of abstraction over the XMLHttpRequest object. On the other hand, fetch uses a lower-level syntax and requires more configuration to use effectively.
+
+2. **Error Handling:** axios handles errors better than fetch. In axios, any response code that falls outside the range of 2xx will trigger an error, which can be easily handled using a catch block. In fetch, a response with a 404 or 500 status code will still resolve successfully, requiring additional checking of the response status.
+
+3. **Cross-Origin Requests:** axios automatically includes credentials and headers for cross-origin requests, whereas with fetch you need to manually set the mode and credentials to include.
+
+Here's an example of how to use `axios` to make a GET request:
+
+```javascript
+import axios from 'axios';
+
+axios.get('https://jsonplaceholder.typicode.com/todos/1')
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+```
+
+And here's an example of how to use `fetch` to make a GET request:
+
+```javascript
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log(data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+```
+As you can see, the axios code is simpler and easier to read, and the error handling is more straightforward. The fetch code requires additional error checking and handling, making it slightly more complex.
+
+
+### **Q. What is HTTP ?**
+HTTP (Hypertext Transfer Protocol) is a protocol that is used to transfer hypertext from client end to server end .
+
+**What are HTTP request Methods ?**
+* Get: This method retrieves information from a given server using a given URL
+* Post: Post method sends the data to server Example: need to update the phone number of user we will use post method
+* Put: It is used to replace all current representations of target resources with uploaded content
+* Delete: It is used to remove all the current representations of the target resource which is given by URL
