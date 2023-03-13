@@ -1952,257 +1952,6 @@ The `MovieList` component retrieves the movies data from the context object usin
 Finally, the App component renders the MovieProvider component as a parent of the MovieList component, so that the MovieList component can access the movies data from the context object.
 
 
-# State Management
-
-## The Four Kinds of React State to Manage :
-When we talk about state in our applications, it’s important to be clear about what types of state actually matter.
-
-There are four main types of state you need to properly manage in your React apps:
-
-1. Local state
-2. Global state
-3. Server state
-4. URL state
-
-
-
-### **Local (UI) state** – 
-* Local state is data we manage in one or another component.
-* Local state is most often managed in React using the useState hook.
-* For example, local state would be needed to show or hide a modal component or to track values for a form component, such as form submission, when the form is disabled and the values of a form’s inputs.
-
-### **Global (UI) state** – 
-* Global state is data we manage across multiple components.
-* Global state is necessary when we want to get and update data anywhere in our app, or in multiple components at least.
-* A common example of global state is authenticated user state. If a user is logged into our app, it is necessary to get and change their data throughout our application.
-* Sometimes state we think should be local might become global.
-
-### **Server state** – 
-* Data that comes from an external server that must be integrated with our UI state.
-* Server state is a simple concept, but can be hard to manage alongside all of our local and global UI state.
-* There are several pieces of state that must be managed every time you fetch or update data from an external server, including loading and error state.
-* Fortunately there are tools such as SWR and React Query that make managing server state much easier.
-
-### **URL state** – 
-* Data that exists on our URLs, including the pathname and query parameters.
-
-* URL state is often missing as a category of state, but it is an important one.
-* In many cases, a lot of major parts of our application rely upon accessing URL state. Try to imagine building a blog without being able to fetch a post based off of its slug or id that is located in the URL!
-
-
-# **REDUX Toolkit**
-
-Redux Toolkit is a set of libraries and tools that make it easier to manage state in React applications using Redux. 
-
-It provides a simpler API for creating and managing Redux stores, includes helpful development tools, improves performance optimization, improves type safety, and provides a clear and consistent architecture for managing application state. 
-
-Overall, Redux Toolkit helps streamline the development process and improve the performance, maintainability, and scalability of your React applications that use Redux.
-
-> **Redux is a global state** 
-
-> **You may need Redux if you don't want to do props drilling (passing props too deep).**
-
-
-![redux](https://www.ceos3c.com/wp-content/uploads/2022/01/redux-toolkit-2.gif)
-
-**Here are some advantages of using Redux Toolkit in React:**
-
-I. Simplified Code:-
-
- Redux Toolkit provides a simplified API for creating and managing Redux stores. It also includes a number of utilities for common Redux tasks, such as creating reducers, handling asynchronous actions, and creating immutable state.
-
-II. Improved Developer Experience:-
-
- Redux Toolkit comes with helpful development tools, including an integration with the Redux DevTools Extension, which makes it easier to debug and inspect the state of your application.
-
-III. Performance Optimization: -
-
-Redux Toolkit includes a utility called "createSlice" that automatically generates optimized Redux reducer functions based on the initial state and action types you provide. This can help improve performance by reducing the amount of unnecessary work done by your reducers.
-
-IV. Improved Type Safety:-
-
- Redux Toolkit comes with built-in TypeScript types, which can help catch errors at compile time rather than runtime. This can improve the stability and maintainability of your codebase.
-
-V. Scalability:-
-
- Redux Toolkit makes it easier to manage complex Redux applications by providing a clear and consistent architecture for managing application state. This can help you scale your application as it grows and becomes more complex.
-
-
-Here is a simple example of how to implement and what are ther step of redux.
-
-**->** Firstly Install the required packages:-
-
-  Install the redux and react-redux packages along with redux-toolkit package in your React application using npm.
-```javascript
-npm install redux react-redux @reduxjs/toolkit
-```
-
-
-**->** reate Redux reducers:-
-
- Create your reducers using the `createSlice` function provided by Redux Toolkit. This function generates a `reducer` function for you, based on the initial state and the actions you define.
-
-
-// countSlice.js
-```javascript
-import { createSlice } from '@reduxjs/toolkit';
-
-const initialState = 0;
-
-const countSlice = createSlice({
-  name: 'count',
-  initialState,
-  reducers: {
-    add: (state, { payload }) => state += payload,
-    reset: (state) => state = initialState
-  }
-});
-
-export const { add, reset } = countSlice.actions;
-export default countSlice.reducer;
-```
-const countSlice = createSlice({...}): This line uses the `createSlice` function to define a new slice of the store called "count". The `createSlice` function takes an object with several properties:
-
-name: A string name for the slice.
-
-initialState: The initial state of the slice.
-
-reducers: An object with functions that define how the slice should respond to actions that are dispatched to the store.
-reducers: {...}: This section defines the two reducers for the "count" slice:
-
-~ add: This reducer takes the current state and a `payload` argument (which is the value passed to the action) and returns a new state with the `payload` value added to it.
-
-> **Payload:-** While action types allow you tell your reducer what action it should take, the payload is the data that your reducer will use to update the state. This lesson shows you how to pass an action payload along with your action type to update the state.
-
-~ reset: This reducer takes the current state and sets it back to the initial state.
-
-*export const { add, reset } = countSlice.actions;:-*
-
- This line exports the add and reset action creators from the "count" slice. These action creators are functions that return action objects with a type property and a payload property (if applicable).
-
-*export default countSlice.reducer;:-*
- This line exports the "count" slice's reducer function, which takes the current state and an action object and returns the new state.
-
-
-**->** Create a Redux store:-
-
- In your store.js file, create a Redux store using the `configureStore` function provided by Redux Toolkit. This function takes an object with a reducer property and an optional middleware property.
-
- > **configureStore** is only accepting one parameter, which is an Object, which is called ConfigureStoreOptions.
-
-// store.js
-```javascript
-import { configureStore } from '@reduxjs/toolkit';
-import countReducer from './countSlice';
-
-const store = configureStore({
-  reducer: {
-    count: countReducer
-  }
-});
-
-export default store;
-```
-import countReducer from './countSlice';: This line imports the "count" slice's reducer function from the countSlice.js file.
-
-*const store = configureStore({...}):-*
-
- This line uses the `configureStore` function to create a new Redux store. The `configureStore` function takes an object with several properties:
-
-> **reducer**: An object with key-value pairs where the keys are the names of the slices in the store and the values are the reducer functions for those slices.
-
-reducer: {...}: This section defines the reducers for the store. In this case, there is only one slice called "count", so the `countReducer` function is associated with it.
-
-**->**This code sets up the Redux store for use in the React app:
-
- In index.js file, import Provider from react-redux. The Provider component from the react-redux library is used to provide the Redux store to the app. The store object is imported from the ./store file.
-
-// index.js
-```javascript
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-
-import { Provider } from 'react-redux';
-import store from './store';
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
-```
-
-**->** Connect Redux to React components:
-
- Use the `useSelector` and `useDispatch` hooks provided by the react-redux package to connect your React components to the Redux store.
-
-// App.js
-```javascript
-import { useDispatch, useSelector } from "react-redux";
-import { add, reset } from "./countSlice";
-
-function App() {
-  const dispatch = useDispatch();
-  const { count } = useSelector(state => state);
-
-  function addOneToCount() {
-    dispatch(add(1));
-  }
-
-  function resetCount() {
-    dispatch(reset());
-  }
-
-  return (
-    <div>
-      Count: {count}
-      <button onClick={addOneToCount}>
-        +1
-      </button>
-      <button onClick={resetCount}>
-        RESET
-      </button>
-    </div>
-  )
-}
-
-export default App
-```
-This code defines the App component, which displays the current count and two buttons to add to the count and reset it. The `useSelector` hook is used to extract the count state from the Redux store. The `useDispatch` hook is used to dispatch the add and reset actions to modify the count state.
-
-> **useSelector:** 
-* useSelector and useDispatch are two hooks provided by the react-redux library that are commonly used in conjunction with Redux Toolkit to manage state in a React application.
-* useSelector is used to select data from the Redux store. It takes a function as an argument that defines how to extract the data from the store, and returns the selected data.
-
->**useDispatch:** 
-* useDispatch is used to dispatch actions to the Redux store. It returns a reference to the dispatch function.
-* if we want to modify the global state we need to useDispatch and the action that we already created in slice.
-
-
-### Summary:
-we have 6 steps to implement the Redux Toolkit to our react project:
-
-* Install Redux Toolkit and React-Redux Packages
-* Create a Redux Store
-* Include the Redux Store to App.js parent
-* Create a Redux State Slice
-* Add Slice Reducers to the Store
-* Implementing useSelector and useDispatch in React Components
-
-
-## Redux Thunk:
-
-* The most common use case for Redux Thunk is for communicating asynchronously with an external API to retrieve or save data. Redux Thunk makes it easy to dispatch actions that follow the lifecycle of a request to an external API.
-
-* Redux Thunk is middleware that allows you to return functions, rather than just actions, within Redux. This allows for delayed actions, including working with promises.
-
-* One of the main use cases for this middleware is for handling actions that might not be synchronous, for example, using axios to send a GET request. 
-
-* Redux Thunk allows us to dispatch those actions asynchronously and resolve each promise that gets returned.
-
-
 # Axio Vs Fetch
 
 **Axios :**
@@ -2281,3 +2030,649 @@ HTTP (Hypertext Transfer Protocol) is a protocol that is used to transfer hypert
 * Post: Post method sends the data to server Example: need to update the phone number of user we will use post method
 * Put: It is used to replace all current representations of target resources with uploaded content
 * Delete: It is used to remove all the current representations of the target resource which is given by URL
+
+
+## Lazy Loading
+
+Lazy loading in React is a technique that allows developers to defer loading certain components or resources until they are actually needed. This can help reduce the initial load time of a web page or application, as well as improve performance by only loading the necessary components when they are required.
+
+**Advantages of Lazy Loading** 
+
+* Reduces initial loading time by reducing the bundle size.
+* Reduces browser workload.
+* Improves application performance in low bandwidth situations.
+* Improves user experience at initial loading.
+* Optimizes resource usage.
+
+**Disadvantages of Lazy Loading**
+
+* Not suitable for small-scale applications.
+* Placeholders can slow down quick scrolling.
+* Requires additional communication with the server to fetch resources.
+* Can affect SEO and ranking.
+
+To perform lazy loading in React, there are a few different methods you can use depending on your specific needs:
+
+**React.lazy() function:-** This method allows you to lazily load a component. You can use this function to load a component asynchronously when it is needed by the application. 
+
+Here's an example:
+```javascript
+const MyComponent = React.lazy(() => import('./MyComponent'));
+```
+
+**React.Suspense component:-** This method allows you to specify a fallback component while the lazily loaded component is being loaded. 
+
+Here's an example:
+```javascript
+import React, { Suspense } from 'react';
+
+const MyComponent = React.lazy(() => import('./MyComponent'));
+
+function App() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <MyComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+In this example, the` <Suspense>` component is used to wrap the `<MyComponent>` component, and the fallback prop specifies the component to render while the `<MyComponent>` component is being loaded.
+
+**React Loadable library:-** This is a third-party library that allows you to perform more advanced lazy loading, such as loading multiple components at once or specifying custom loading indicators. 
+
+Here's an example:
+```javascript
+import Loadable from 'react-loadable';
+
+const LoadableMyComponent = Loadable({
+  loader: () => import('./MyComponent'),
+  loading: () => <div>Loading...</div>,
+});
+
+function App() {
+  return (
+    <div>
+      <LoadableMyComponent />
+    </div>
+  );
+}
+```
+In this example, the Loadable function is used to lazily load the `<MyComponent>` component, and the loading prop specifies the component to render while it is being loaded.
+
+
+## Memory Leak
+
+In React, a memory leak can occur when a component allocates memory and fails to release it after it's no longer needed. This can lead to an accumulation of unused memory, which can cause performance issues and even crash the application.
+
+**Here are a few scenarios in which memory leaks can occur in React:**
+
+1. **Improper use of state and props:** When a component's state or props are updated frequently, it can lead to a buildup of memory. For example, if a component has a setInterval() method that updates the state every second, the state object will keep growing, eventually leading to a memory leak.
+
+2. **Event listeners:** When a component registers event listeners, such as mouse clicks or key presses, it can create a memory leak if it doesn't remove the listeners when the component is unmounted. This can cause the event listeners to accumulate, leading to memory issues.
+
+3. **Improper use of useEffect():** The useEffect() hook is used to perform side effects in functional components. If the hook is not used correctly, it can lead to memory leaks. For example, if a component sets up a timer in useEffect() and doesn't clear it when the component unmounts, the timer will continue running, causing a memory leak.
+
+**To prevent memory leaks in React, it's important to follow best practices, such as:**
+
+* Use the useMemo() hook to memoize expensive calculations and prevent unnecessary re-renders.
+
+* Use the useCallback() hook to memoize event handlers and prevent unnecessary re-renders.
+
+* Use the useRef() hook to create references that persist across renders.
+
+* Use the useEffect() hook to clean up any resources, such as event listeners or timers, when the component unmounts.
+
+By following these best practices, you can prevent memory leaks in your React applications and ensure optimal performance.
+
+
+
+# State Management
+
+## The Four Kinds of React State to Manage :
+When we talk about state in our applications, it’s important to be clear about what types of state actually matter.
+
+There are four main types of state you need to properly manage in your React apps:
+
+1. Local state
+2. Global state
+3. Server state
+4. URL state
+
+
+
+### **Local (UI) state** – 
+* Local state is data we manage in one or another component.
+* Local state is most often managed in React using the useState hook.
+* For example, local state would be needed to show or hide a modal component or to track values for a form component, such as form submission, when the form is disabled and the values of a form’s inputs.
+
+### **Global (UI) state** – 
+* Global state is data we manage across multiple components.
+* Global state is necessary when we want to get and update data anywhere in our app, or in multiple components at least.
+* A common example of global state is authenticated user state. If a user is logged into our app, it is necessary to get and change their data throughout our application.
+* Sometimes state we think should be local might become global.
+
+### **Server state** – 
+* Data that comes from an external server that must be integrated with our UI state.
+* Server state is a simple concept, but can be hard to manage alongside all of our local and global UI state.
+* There are several pieces of state that must be managed every time you fetch or update data from an external server, including loading and error state.
+* Fortunately there are tools such as SWR and React Query that make managing server state much easier.
+
+### **URL state** – 
+* Data that exists on our URLs, including the pathname and query parameters.
+
+* URL state is often missing as a category of state, but it is an important one.
+* In many cases, a lot of major parts of our application rely upon accessing URL state. Try to imagine building a blog without being able to fetch a post based off of its slug or id that is located in the URL!
+
+
+# **REDUX Toolkit**
+
+Redux Toolkit is a set of libraries and tools that make it easier to manage state in React applications using Redux. 
+
+It provides a simpler API for creating and managing Redux stores, includes helpful development tools, improves performance optimization, improves type safety, and provides a clear and consistent architecture for managing application state. 
+
+Overall, Redux Toolkit helps streamline the development process and improve the performance, maintainability, and scalability of your React applications that use Redux.
+
+> **Redux is a global state** 
+
+> **You may need Redux if you don't want to do props drilling (passing props too deep).**
+
+
+![redux](https://www.ceos3c.com/wp-content/uploads/2022/01/redux-toolkit-2.gif)
+
+**Here are some advantages of using Redux Toolkit in React:**
+
+I. Simplified Code:-
+
+ Redux Toolkit provides a simplified API for creating and managing Redux stores. It also includes a number of utilities for common Redux tasks, such as creating reducers, handling asynchronous actions, and creating immutable state.
+
+II. Improved Developer Experience:-
+
+ Redux Toolkit comes with helpful development tools, including an integration with the Redux DevTools Extension, which makes it easier to debug and inspect the state of your application.
+
+III. Performance Optimization: -
+
+Redux Toolkit includes a utility called "createSlice" that automatically generates optimized Redux reducer functions based on the initial state and action types you provide. This can help improve performance by reducing the amount of unnecessary work done by your reducers.
+
+IV. Improved Type Safety:-
+
+ Redux Toolkit comes with built-in TypeScript types, which can help catch errors at compile time rather than runtime. This can improve the stability and maintainability of your codebase.
+
+V. Scalability:-
+
+ Redux Toolkit makes it easier to manage complex Redux applications by providing a clear and consistent architecture for managing application state. This can help you scale your application as it grows and becomes more complex.
+
+### Data flow in Redux
+Redux follows a unidirectional data flow. Redux has 3 major components: ‘actions’, ‘reducers’ and the ‘store’.
+![redux dataflow](https://www.eternussolutions.com/wp-content/uploads/2020/12/redux-2.png)
+
+
+
+Here is a simple example of how to implement and what are ther step of redux.
+
+**->** Firstly Install the required packages:-
+
+  Install the redux and react-redux packages along with redux-toolkit package in your React application using npm.
+```javascript
+npm install redux react-redux @reduxjs/toolkit
+```
+
+
+**->** **react Redux reducers:-**
+
+ Create your reducers using the `createSlice` function provided by Redux Toolkit. This function generates a `reducer` function for you, based on the initial state and the actions you define.
+
+
+// countSlice.js
+```javascript
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = 0;
+
+const countSlice = createSlice({
+  name: 'count',
+  initialState,
+  reducers: {
+    add: (state, { payload }) => state += payload,
+    reset: (state) => state = initialState
+  }
+});
+
+export const { add, reset } = countSlice.actions;
+export default countSlice.reducer;
+```
+const countSlice = createSlice({...}): This line uses the `createSlice` function to define a new slice of the store called "count". The `createSlice` function takes an object with several properties:
+
+~name: A string name for the slice.
+
+~initialState: The initial state of the slice.
+
+~reducers: An object with functions that define how the slice should respond to actions that are dispatched to the store.
+reducers: {...}: This section defines the two reducers for the "count" slice:
+
+~ add: This reducer takes the current state and a `payload` argument (which is the value passed to the action) and returns a new state with the `payload` value added to it.
+
+> **Payload:-** While action types allow you tell your reducer what action it should take, the payload is the data that your reducer will use to update the state. This lesson shows you how to pass an action payload along with your action type to update the state.
+
+~ reset: This reducer takes the current state and sets it back to the initial state.
+
+~ *export const { add, reset } = countSlice.actions;*
+
+ This line exports the add and reset action creators from the "count" slice. These action creators are functions that return action objects with a type property and a payload property (if applicable).
+
+~ *export default countSlice.reducer;:-*
+ This line exports the "count" slice's reducer function, which takes the current state and an action object and returns the new state.
+
+
+**->** **Create a Redux store:-**
+
+ In your store.js file, create a Redux store using the `configureStore` function provided by Redux Toolkit. This function takes an object with a reducer property and an optional middleware property.
+
+ > **configureStore** is only accepting one parameter, which is an Object, which is called ConfigureStoreOptions.
+
+// store.js
+```javascript
+import { configureStore } from '@reduxjs/toolkit';
+import countReducer from './countSlice';
+
+const store = configureStore({
+  reducer: {
+    count: countReducer
+  }
+});
+
+export default store;
+```
+import countReducer from './countSlice';: This line imports the "count" slice's reducer function from the countSlice.js file.
+
+*const store = configureStore({...}):-*
+
+ This line uses the `configureStore` function to create a new Redux store. The `configureStore` function takes an object with several properties:
+
+> **reducer**: An object with key-value pairs where the keys are the names of the slices in the store and the values are the reducer functions for those slices.
+
+reducer: {...}: This section defines the reducers for the store. In this case, there is only one slice called "count", so the `countReducer` function is associated with it.
+
+**->** **This code sets up the Redux store for use in the React app:**
+
+ In index.js file, import Provider from react-redux. The Provider component from the react-redux library is used to provide the Redux store to the app. The store object is imported from the ./store file.
+
+// index.js
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+import { Provider } from 'react-redux';
+import store from './store';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+```
+
+**->** **Connect Redux to React components:**
+
+ Use the `useSelector` and `useDispatch` hooks provided by the react-redux package to connect your React components to the Redux store.
+
+// App.js
+```javascript
+import { useDispatch, useSelector } from "react-redux";
+import { add, reset } from "./countSlice";
+
+function App() {
+  const dispatch = useDispatch();
+  const { count } = useSelector(state => state);
+
+  function addOneToCount() {
+    dispatch(add(1));
+  }
+
+  function resetCount() {
+    dispatch(reset());
+  }
+
+  return (
+    <div>
+      Count: {count}
+      <button onClick={addOneToCount}>
+        +1
+      </button>
+      <button onClick={resetCount}>
+        RESET
+      </button>
+    </div>
+  )
+}
+
+export default App
+```
+This code defines the App component, which displays the current count and two buttons to add to the count and reset it. The `useSelector` hook is used to extract the count state from the Redux store. The `useDispatch` hook is used to dispatch the add and reset actions to modify the count state.
+
+> **useSelector:** 
+* useSelector and useDispatch are two hooks provided by the react-redux library that are commonly used in conjunction with Redux Toolkit to manage state in a React application.
+* useSelector is used to select data from the Redux store. It takes a function as an argument that defines how to extract the data from the store, and returns the selected data.
+
+>**useDispatch:** 
+* useDispatch is used to dispatch actions to the Redux store. It returns a reference to the dispatch function.
+* if we want to modify the global state we need to useDispatch and the action that we already created in slice.
+
+
+### Summary:
+we have 6 steps to implement the Redux Toolkit to our react project:
+
+* Install Redux Toolkit and React-Redux Packages
+* Create a Redux Store
+* Include the Redux Store to App.js parent
+* Create a Redux State Slice
+* Add Slice Reducers to the Store
+* Implementing useSelector and useDispatch in React Components
+
+
+## CURD operation in Redux
+
+Here's a simple example of how to perform CRUD operations in Redux using a simple counter app.
+
+**First, let's define the Redux store with an initial state of 0:**
+
+```javascript
+import { createStore } from 'redux';
+
+const store = createStore(counterReducer);
+
+export default store;
+
+
+const initialState = {
+  count: 0
+};
+
+const counterReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { ...state, count: state.count + 1 };
+    case 'DECREMENT':
+      return { ...state, count: state.count - 1 };
+    case 'RESET':
+      return { ...state, count: 0 };
+    default:
+      return state;
+  }
+};
+
+
+```
+In this example, we define a simple reducer that handles three actions: INCREMENT, DECREMENT, and RESET. The INCREMENT and DECREMENT actions modify the count property of the state by incrementing or decrementing it by 1, while the RESET action resets the count property to 0.
+
+**Next, let's create three action creators to handle the three actions:**
+
+```javascript
+export const increment = () => {
+  return {
+    type: 'INCREMENT'
+  };
+};
+
+export const decrement = () => {
+  return {
+    type: 'DECREMENT'
+  };
+};
+
+export const reset = () => {
+  return {
+    type: 'RESET'
+  };
+};
+```
+These action creators simply return an object with a type property that corresponds to the action type.
+
+**Now, let's create a simple React component that displays the current count and allows the user to perform CRUD operations on it:**
+
+```javascript
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, reset } from './actions';
+
+const Counter = () => {
+  const count = useSelector(state => state.count);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <h1>Counter: {count}</h1>
+      <button onClick={() => dispatch(increment())}>Increment</button>
+      <button onClick={() => dispatch(decrement())}>Decrement</button>
+      <button onClick={() => dispatch(reset())}>Reset</button>
+    </div>
+  );
+};
+
+export default Counter;
+```
+In this example, we use the `useSelector` hook to retrieve the count property from the Redux store, and the `useDispatch` hook to dispatch the increment, decrement, and reset actions.
+
+The component simply displays the current count and provides buttons to increment, decrement, and reset the count.
+
+And that's it! With this simple example, we can see how to perform CRUD operations in Redux using a simple counter app.
+
+
+
+## Redux Thunk:
+
+* The most common use case for Redux Thunk is for communicating asynchronously with an external API to retrieve or save data. Redux Thunk makes it easy to dispatch actions that follow the lifecycle of a request to an external API.
+
+* Redux Thunk is middleware that allows you to return functions, rather than just actions, within Redux. This allows for delayed actions, including working with promises.
+
+* One of the main use cases for this middleware is for handling actions that might not be synchronous, for example, using axios to send a GET request. 
+
+* Redux Thunk allows us to dispatch those actions asynchronously and resolve each promise that gets returned.
+
+### Example:
+Suppose you have an application that needs to fetch data from an API and display it in the UI. You can use Redux-thunk to handle asynchronous actions in Redux.
+
+First, you would define your Redux store with the redux-thunk middleware:
+
+```javascript
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from './reducers';
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk)
+);
+export default store
+```
+Next, you would create an action creator that makes an API request and dispatches actions to update the Redux store:
+
+```javascript
+import axios from 'axios';
+
+export const fetchPosts = () => {
+  return (dispatch) => {
+    dispatch({ type: 'FETCH_POSTS_REQUEST' });
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(response => {
+        const posts = response.data;
+        dispatch({ type: 'FETCH_POSTS_SUCCESS', payload: posts });
+      })
+      .catch(error => {
+        dispatch({ type: 'FETCH_POSTS_FAILURE', error });
+      });
+  };
+};
+```
+In this example, `fetchPosts` is a `thunk` action creator that returns a function instead of an object. The function takes `dispatch` as an argument, which allows it to dispatch multiple actions.
+
+When `fetchPosts` is called, it dispatches a **FETCH_POSTS_REQUEST** action to indicate that the API request is starting. It then makes an API request using the axios library. When the request is successful, it dispatches a **FETCH_POSTS_SUCCESS** action with the response data as the payload. If the request fails, it dispatches a **FETCH_POSTS_FAILURE** action with the error object.
+
+Finally, you would use this action creator in your component to fetch the data and update the Redux store:
+
+```javascript
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts } from './actions';
+
+const Posts = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector(state => state.posts);
+  const isLoading = useSelector(state => state.isLoading);
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      {posts.map(post => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Posts;
+```
+In this example, the Posts component uses the `useDispatch` and `useSelector` hooks from the react-redux library to interact with the Redux store. It dispatches the `fetchPosts` action when the component mounts using the `useEffect` hook. It also uses the `isLoading` state to show a loading indicator while the API request is in progress. Once the request is complete, it displays the fetched data in the UI.
+
+That's a simple example of how Redux-thunk can be used to handle asynchronous actions in Redux.
+
+## Thunk Vs Saga
+
+Saga middleware is a library for handling side effects in React applications using Redux. Side effects are any operations that are not pure functions, such as making API calls, accessing browser storage, or handling asynchronous code. These effects can be difficult to manage in Redux, and Saga provides a way to handle them in a declarative and testable way.
+
+|Redux-Thunk |	Redux-Saga |
+|:-----------|:------------|
+|Less boilerplate code|	More boilerplate code|
+|Easy to understand as compared to redux-saga|	Difficult to understand as there are multiple concepts to learn like generator functions and redux-saga effects|
+|May be difficult to scale up	|Easy to scale as compared to redux-thunk|
+|Action creators may hold too much async logic	|Action creators stay pure|
+|May get difficult to test|	Comparatively easy to test as all your async logic remains together|
+
+> In summary, Thunk is a simple and lightweight library that is good for handling basic asynchronous operations, while Saga is a more powerful and flexible library that can handle more complex async scenarios.
+
+
+**Thunk example:**
+
+Let's say we have a todo list application, and we want to fetch the list of todos from an API endpoint when the application starts. Here's how we could do it with a thunk:
+
+// actions.js
+
+
+```javascript
+import axios from 'axios';
+
+export const fetchTodos = () => {
+  return dispatch => {
+    dispatch({ type: 'FETCH_TODOS_REQUEST' });
+    axios.get('/api/todos')
+      .then(response => {
+        dispatch({ type: 'FETCH_TODOS_SUCCESS', payload: response.data });
+      })
+      .catch(error => {
+        dispatch({ type: 'FETCH_TODOS_FAILURE', payload: error });
+      });
+  };
+};
+```
+
+// reducer.js
+```javascript
+const initialState = {
+  todos: [],
+  loading: false,
+  error: null
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'FETCH_TODOS_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_TODOS_SUCCESS':
+      return { ...state, todos: action.payload, loading: false };
+    case 'FETCH_TODOS_FAILURE':
+      return { ...state, error: action.payload, loading: false };
+    default:
+      return state;
+  }
+};
+```
+In this example, we define a fetchTodos action creator that returns a function (i.e., a thunk) that dispatches multiple actions in response to the async operation. The first action dispatched indicates that the request is being made, and the second action is dispatched if the request is successful, passing the fetched data as payload. If the request fails, the third action is dispatched with the error as payload. The reducer handles these actions and updates the state accordingly.
+
+**Saga example:**
+
+Let's say we want to implement a feature that allows users to search for todos by keyword. Here's how we could do it with a saga:
+
+// actions.js
+
+```javascript
+export const searchTodos = keyword => {
+  return { type: 'SEARCH_TODOS_REQUEST', payload: keyword };
+};
+
+export const searchTodosSuccess = results => {
+  return { type: 'SEARCH_TODOS_SUCCESS', payload: results };
+};
+
+export const searchTodosFailure = error => {
+  return { type: 'SEARCH_TODOS_FAILURE', payload: error };
+};
+```
+
+// sagas.js
+```javascript
+import { takeLatest, call, put } from 'redux-saga/effects';
+import axios from 'axios';
+
+function* searchTodosSaga(action) {
+  try {
+    const response = yield call(axios.get, '/api/todos', {
+      params: { q: action.payload }
+    });
+    yield put(searchTodosSuccess(response.data));
+  } catch (error) {
+    yield put(searchTodosFailure(error));
+  }
+}
+
+function* rootSaga() {
+  yield takeLatest('SEARCH_TODOS_REQUEST', searchTodosSaga);
+}
+
+export default rootSaga;
+```
+
+// reducer.js
+```javascript
+const initialState = {
+  todos: [],
+  loading: false,
+  error: null
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'SEARCH_TODOS_REQUEST':
+      return { ...state, loading: true };
+    case 'SEARCH_TODOS_SUCCESS':
+      return { ...state, todos: action.payload, loading: false };
+    case 'SEARCH_TODOS_FAILURE':
+      return { ...state, error: action.payload, loading: false };
+    default:
+      return state;
+  }
+};
+```
+In this example, we define a searchTodos action creator that takes a keyword as parameter and dispatches a SEARCH_TODOS_REQUEST action with the keyword as payload. 
