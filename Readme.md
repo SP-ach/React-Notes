@@ -1378,6 +1378,8 @@ useCallback can be useful when you have a function that is passed down to multip
 ## useRef
 useRef is a React hook that allows you to create a mutable reference to an element or value, which persists across re-renders of your component.
 
+ It returns an object with a single property, `current`, which initially holds the value passed as argument (or undefined if no argument is provided). We can modify the `current` property without triggering a re-render of the component. This makes it useful for managing mutable values and for accessing the underlying DOM elements.
+
 In simple terms, useRef can be used to store values that don't change often and are not used for rendering purposes, such as DOM elements, timers, or any other mutable value.
 
 ```javascript
@@ -1446,6 +1448,27 @@ The component returns a `div` that contains an `h2` element that displays the cu
 When the buttons are clicked, the `dispatch` function is called with the appropriate action object, and the useReducer hook updates the state based on the action. The h2 element is re-rendered with the updated value of value.
 
 
+## UseParams
+
+The useParams hook is a built-in hook in React Router that allows you to access the parameters of the current route. It returns an object containing key-value pairs of the parameters.
+
+Here's an example of how to use useParams:
+
+```javascript
+import { useParams } from 'react-router-dom';
+
+function App() {
+  const { productId } = useParams();
+
+  return (
+    <div>
+      <h1>Product ID: {productId}</h1>
+    </div>
+  );
+}
+export default App
+In the example above, useParams is used to get the productId parameter from the current route. This parameter can be accessed via the productId variable. For example, if the current URL is /products/123, the productId variable would be '123'.
+
 ## *DAY-9*
 
   # Routing
@@ -1502,6 +1525,7 @@ We are taking 3 pages Home, About, Contact. And i place them in ul tag as a link
 
 
 *#index.js*
+
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -2191,6 +2215,19 @@ Redux Toolkit is a set of libraries and tools that make it easier to manage stat
 It provides a simpler API for creating and managing Redux stores, includes helpful development tools, improves performance optimization, improves type safety, and provides a clear and consistent architecture for managing application state. 
 
 Overall, Redux Toolkit helps streamline the development process and improve the performance, maintainability, and scalability of your React applications that use Redux.
+
+Store:
+The Redux store is the main, central bucket which stores all the states of an application. It should be considered and maintained as a single source of truth for the state of the application.
+
+Action:
+The only way to change the state is to emit an action, which is an object describing what happened
+
+reducers:
+Reducers, as the name suggests, take in two things: previous state and an action. Then they reduce it (read it return) to one entity: the new updated instance of state.
+
+So reducers are basically pure JS functions which take in the previous state and an action and return the newly updated state.
+
+
 
 > **Redux is a global state** 
 
