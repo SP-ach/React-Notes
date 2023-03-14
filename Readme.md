@@ -1083,68 +1083,86 @@ Note: **Here ‘e’ is a synthetic event**, a cross-browser object. It is made 
 
 
 # Higher Order Compoent
+
+
+In React, a Higher-Order Component (HOC) is a function that takes a component as an input and returns a new component with additional functionality. Essentially, it's a way to reuse component logic and share it between different components.
+
+To use a HOC, you simply pass your component as an argument to the function that defines the HOC. The function returns a new component with the added functionality.
+
+So in this below example im going to create one counter and hover counter basically , whenever i hover over the text the counter should be updated by one. 
+
+
 App.js 
 ```javascript
-import React from 'react' 
-import ClickCounter from './ClickCounter' 
-import HoverComp from './HoverComp' 
-const App = () => { 
-  return ( 
-    <div> 
-    <ClickCounter /> 
-    <HoverComp /> 
-    </div> ) } 
-    
-export default App
+import React from "react";
+import ClickCounter from "./ClickCounter";
+import HoverComp from "./HoverComp";
+
+const App = () => {
+  return (
+    <div>
+      <ClickCounter />
+      <HoverComp />
+    </div>
+  );
+};
+
+export default App;
+
 ```
 ClickCounter.js 
 ```javascript
-import React, { Component } from 'react' 
-import UpdatedComp from './UpdatedComp' 
-class ClickCounter extends Component { 
-  render() { 
-    const { count, incrementCount } = this.props 
-    console.log(incrementCount); 
-    return ( 
-      <button onClick={incrementCount}> Class {count} Times </button> 
-      ) 
-    } } 
-export default UpdatedComp(ClickCounter)
+import React from "react";
+import UpdatedComp from "./UpdatedComp";
+
+const ClickCounter = ({ count, incrementCount }) => {
+  console.log(incrementCount);
+  return <button onClick={incrementCount}> Count {count} Times </button>;
+};
+
+export default UpdatedComp(ClickCounter);
+
 ```
 HoverComp.js 
 ```javascript 
-import React, { Component } from 'react' 
-import UpdatedComp from './UpdatedComp' 
-export class HoverComp extends Component { 
-  render() { 
-    const { count, incrementCount } = this.props 
-    console.log(incrementCount); 
-    return ( 
-      <h2 onMouseOver={incrementCount}> Hovered {count} Times </h2> ) } }
-      
-export default UpdatedComp( HoverComp )
+import React from "react";
+import UpdatedComp from "./UpdatedComp";
+
+const HoverComp = ({ count, incrementCount }) => {
+  console.log(incrementCount);
+  return <h2 onMouseOver={incrementCount}> Hovered {count} Times </h2>;
+};
+
+export default UpdatedComp(HoverComp);
+
 ```
 UpdatedComp.js
 ```javascript
-import React,{Component} from "react"; 
-const UpdatedComp = (OriginalComponent) => { 
-  class NewComponent extends Component { 
-    constructor(props) { 
-      super(props) 
-      this.state = { count : 0 } 
-      } 
-      
-  incrementCount = () => { 
-    this.setState( { count: this.state.count+1 } ) 
-    } 
-    render() { 
-      return <OriginalComponent count={this.state.count} incrementCount={this.incrementCount} /> 
-      } 
-  } 
-return NewComponent 
-} 
-export default UpdatedComp
+import React, { useState } from "react";
+
+const UpdatedComp = (OriginalComponent) => {
+  const NewComponent = () => {
+    const [count, setCount] = useState(0);
+
+    const incrementCount = () => {
+      setCount(count + 1);
+    };
+
+    return <OriginalComponent count={count} incrementCount={incrementCount} />;
+  };
+
+  return NewComponent;
+};
+
+export default UpdatedComp;
+
 ```
+
+In this code, the UpdatedComp function is the higher-order component. It takes a component as its argument and returns a new component with an added state `count` and a method `incrementCount` that updates the count. The OriginalComponent is rendered inside the NewComponent, and the count and `incrementCount` props are passed to it.
+
+Both ClickCounter and HoverComp components are wrapped in the UpdatedComp higher-order component to enhance them with the count state and `incrementCount` method. Therefore, they have access to the count and `incrementCount` props, which they can use to update their state and re-render.
+
+In summary, the higher-order component in this code is the UpdatedComp function that takes a component as an argument and returns a new component with added functionality. It is used to enhance the ClickCounter and HoverComp components with state and methods.
 
 ## *DAY-8*
 
