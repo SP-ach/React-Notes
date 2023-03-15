@@ -630,6 +630,8 @@ function ChildComponent(props) {
 }
 export default ChildComponent;
 ```
+Output:
+![parent to child](./p-to-c.png)
 In this example, the ParentComponent passes the data object to the ChildComponent as a prop. The ChildComponent then receives the data object as a prop, and can access its properties using dot notation (data.name, data.age, data.city) within the function body.
 
 
@@ -657,6 +659,9 @@ function Example() {
 }
 export default Example;
 ```
+Output:
+![conditional](./image%20(1).png)
+
 * In this example, we use the useState hook to create a boolean state variable called `showText`. The initial value is false, which means the text won't be shown initially.
 
 * We also define a function called `handleClick` that toggles the value of `showText` between true and false.
@@ -1045,6 +1050,7 @@ function EventBind() {
     </>
   );
 }
+export default EventBind
 ```
 **Let’s see some of the event attributes:**   
 
@@ -1157,6 +1163,10 @@ const UpdatedComp = (OriginalComponent) => {
 export default UpdatedComp;
 
 ```
+Output:
+![alt](./image%20(2).png)
+So after hovering over the text and click on the button the counter will update by one.
+![alt](./image%20(3).png)
 
 In this code, the UpdatedComp function is the higher-order component. It takes a component as its argument and returns a new component with an added state `count` and a method `incrementCount` that updates the count. The OriginalComponent is rendered inside the NewComponent, and the count and `incrementCount` props are passed to it.
 
@@ -1278,6 +1288,9 @@ function App() {
 }
 export default App
 ```
+Output:
+![useeffect](./image%20(4).png)
+
 Here we declare 2 states `setCount` and `setNum`. and add counter to both of them . And we use useeffect and alert. so when one user click on the both buttons in every render one alert will appear. 
 
 Now lets use empty dependency
@@ -1319,6 +1332,8 @@ function App() {
   );
 }
 ```
+Output:
+![useMemo](./image%20(5).png)
 
 In this example, we use useMemo to compute the sum of a and b, and store the result in the result variable. The useMemo function takes a callback function as its first argument, which is the function that we want to memoize. 
 
@@ -1364,6 +1379,8 @@ function ChildComponent(props) {
 
 export default MyComponent;
 ```
+Output:
+![usecallback](./image%20(6).png)
 
 In this example, we use useCallback to memoize the `handleClick` function that is passed as a prop to the ChildComponent. The useCallback function takes a callback function as its first argument, which is the function that we want to memoize. The second argument is an array of dependencies that useCallback will use to determine when to re-create the function.
 
@@ -1400,6 +1417,8 @@ function App() {
       
 export default App;
 ```
+Output:
+![useref](./image%20(7).png)
 In the example,
 The component has a local state variable called `inputValue` that is initialized with an empty string using useState. `setInputValue` is a function used to update the value of `inputValue` state variable when the input field changes.
 
@@ -1434,6 +1453,7 @@ It does very similiar to setState, It's a different way to manage state using Re
     ); 
   }
 ```
+![usereducer](./image%20(8).png)
 In this example,
 The component initializes a constant `initial` with a value of 0. This is the initial value for the state managed by the `useReducer` hook. The component also defines a reducer function, which takes in the current state and an action object, and returns a new state based on the action.
 
@@ -1467,6 +1487,7 @@ function App() {
   );
 }
 export default App
+```
 In the example above, useParams is used to get the productId parameter from the current route. This parameter can be accessed via the productId variable. For example, if the current URL is /products/123, the productId variable would be '123'.
 
 ## *DAY-9*
@@ -1617,6 +1638,10 @@ const Contact = () => {
 
 export default Contact
 ```
+Output:
+<span>
+![Home](./image%20(9).png) ![Home](./image%20(10).png) ![Home](./image%20(11).png)
+</span>
 
 
 
