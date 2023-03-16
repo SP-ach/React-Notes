@@ -2431,6 +2431,10 @@ function App() {
 
 export default App
 ```
+
+Output:
+![redux](./image%20(12).png)
+
 This code defines the App component, which displays the current count and two buttons to add to the count and reset it. The `useSelector` hook is used to extract the count state from the Redux store. The `useDispatch` hook is used to dispatch the add and reset actions to modify the count state.
 
 > **useSelector:** 
@@ -2456,6 +2460,8 @@ we have 6 steps to implement the Redux Toolkit to our react project:
 ## CURD operation in Redux
 
 Here's a simple example of how to perform CRUD operations in Redux using a simple counter app.
+
+
 
 **First, let's define the Redux store with an initial state of 0:**
 
@@ -2487,6 +2493,13 @@ const counterReducer = (state = initialState, action) => {
 
 ```
 In this example, we define a simple reducer that handles three actions: INCREMENT, DECREMENT, and RESET. The INCREMENT and DECREMENT actions modify the count property of the state by incrementing or decrementing it by 1, while the RESET action resets the count property to 0.
+
+**->** Now that we have our store, let's define our CRUD operations. In this example, we will perform the following operations:
+
+* Create: Set the counter to a specific value
+* Read: Get the current value of the counter
+* Update: Increment or decrement the counter by 1
+* Delete: Not applicable to this app
 
 **Next, let's create three action creators to handle the three actions:**
 
@@ -2649,7 +2662,6 @@ Saga middleware is a library for handling side effects in React applications usi
 Let's say we have a todo list application, and we want to fetch the list of todos from an API endpoint when the application starts. Here's how we could do it with a thunk:
 
 // actions.js
-
 
 ```javascript
 import axios from 'axios';
