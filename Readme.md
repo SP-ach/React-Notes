@@ -1,6 +1,101 @@
 **React Roadmap doc:**
  https://docs.google.com/spreadsheets/d/15SA5agTJ-kksNk3xyVXWx7DyptlyAQiDqwVueUkpVuE/edit#gid=0
 
+# Topics
+
+1. React Introduction
+    * What is React
+    * React vs Vue vs Angular
+2. React Features
+    * Virtual Dom
+    * SPA,JSX,Bebel
+    * One way data binding
+    * Components
+    * Class component
+    * Functional component
+    * Named and default export
+    * Communiny support
+    * Web and mobile
+
+3. Class and functional component
+    * Components and props
+    * Is there any reason to still use react class components?
+    * Functional components vs class components in react
+    * Migrate class components to functional components with Hooks in react
+
+4. State and Props
+    * How to use props 
+    * Pass props in both class and functional component
+    * How to update state from props
+    * How to pass data from parent to child and vice versa
+    * Putting props to usestate
+
+5. Conditional rendering
+    * How to perform
+    * Different techniques for conditional rendering
+
+6. Rendering
+    * Life cycle methods
+
+           @Mounting
+              constructor()
+              render()
+              componentDidMount()
+           @Updating
+              shouldComponentUpdate()
+              render()
+              componentDidUpdate()
+           @Unmounting
+              componentWillUnmount()
+
+7. Lists and keys
+      * List components in react 
+      * Why do we need the key props"
+
+8.  Events Handling events in react 
+      * Synthetic events
+      * React event handler
+9. HOC(Higher Order Component)"
+
+10. HOOKS
+
+      * UseState
+      * useEffect
+      * useMemo
+      * useRef
+      * UseReducer
+      * UseCallback""
+      * useContext
+      * useParams hook
+
+11. ROUTERS
+
+      * How to perform routing
+      * Brower router
+      * Routes
+      * Route
+      * Link
+      * Dynamic params in routing
+
+12. Props drilling
+13. State uplifting
+14. Context API
+15. Axio and fetch
+      * Get, post, put,delete
+      * Fetch json file and show it in the screen
+      * Create own API and Fetch it and show on the screen
+      * Difference between axio and fetch
+16. Lazy loading 
+17. Memory leak
+18. State management
+      * Redux toolkit 
+      * perform CURD operation in redux
+      * Redux thunk 
+      * Redux saga vs Thunk
+
+
+
+
 # **REACT NOTES** 
 
 ## DAY-1
