@@ -7,11 +7,11 @@
     * What is React
     * React vs Vue vs Angular
 2. React Features
-    * Virtual Dom
+    * [Virtual Dom](#virtual-dom)
     * SPA,JSX,Bebel
     * One way data binding
     * Components
-    * Class component
+    * [Class Components](#class-components)
     * Functional component
     * Named and default export
     * Communiny support
@@ -35,7 +35,7 @@
     * Different techniques for conditional rendering
 
 6. Rendering
-    * Life cycle methods
+    * [Life Cycle Methods](#life-cycle-methods)
 
            @Mounting
               constructor()
@@ -55,40 +55,40 @@
 8.  Events Handling events in react 
       * Synthetic events
       * React event handler
-9. HOC(Higher Order Component)"
+9. [Higher Order Compoent](#higher-order-compoent)
 
 10. HOOKS
 
-      * UseState
+      * [UseState](#usestate)
       * useEffect
-      * useMemo
+      * [useMemo](#usememo)
       * useRef
-      * UseReducer
+      * [useReducer](#usereducer)
       * UseCallback""
       * useContext
       * useParams hook
 
-11. ROUTERS
+11. [Routing](#routing)
 
       * How to perform routing
       * Brower router
       * Routes
       * Route
       * Link
-      * Dynamic params in routing
+      * [Dynamic params in Routing](#dynamic-params-in-routing)
 
-12. Props drilling
+12. [Props drilling](#props-drilling)
 13. State uplifting
-14. Context API
-15. Axio and fetch
+14. [Context API](#context-api)
+15. [Axio Vs Fetch](#axio-vs-fetch)
       * Get, post, put,delete
       * Fetch json file and show it in the screen
       * Create own API and Fetch it and show on the screen
       * Difference between axio and fetch
-16. Lazy loading 
+16. [Lazy Loading](#lazy-loading)
 17. Memory leak
 18. State management
-      * Redux toolkit 
+      * [REDUX Toolkit](#redux-toolkit)
       * perform CURD operation in redux
       * Redux thunk 
       * Redux saga vs Thunk
@@ -302,7 +302,7 @@ Some of the features that make React effective for both web and mobile developme
 *Third-party libraries and tools*: The React community has developed many third-party libraries and tools that can be used to build web and mobile applications. These tools include libraries for state management, routing, styling, testing, and more, which can help developers work more efficiently and effectively.
 
 # Components
-## Class Components:
+## Class Components
 
 In React, class-based components are a type of component that is defined using a JavaScript class. They are an older method of defining components, and have largely been replaced by functional components in modern React development. However, they are still commonly used in legacy code and in some specialized cases.
 
@@ -826,7 +826,7 @@ function MyComponent(props) {
 
 ## *DAY-4*
 
-# Life Cycle Methods:
+# Life Cycle Methods
 
 In React, lifecycle methods are special methods that allow you to perform actions at specific stages in a component's lifecycle. These methods are called automatically by React at different points in the component's life.
 
@@ -1944,6 +1944,8 @@ To overcome these drawbacks, alternative state management solutions such as **co
 
 ### Example 2: With Usecontext hook and Context API
 
+## Context API
+
 The problem with Prop Drilling is that whenever data from the Parent component will be needed, it would have to come from each level, Regardless of the fact that it is not needed there and simply needed in last.
 
 A better alternative to this is using useContext hook. The useContext hook is based on Context API and works on the mechanism of Provider and Consumer. Provider needs to wrap components inside Provider Components in which data have to be consumed. Then in those components, using the useContext hook that data needs to be consumed.
@@ -2328,7 +2330,7 @@ There are four main types of state you need to properly manage in your React app
 * In many cases, a lot of major parts of our application rely upon accessing URL state. Try to imagine building a blog without being able to fetch a post based off of its slug or id that is located in the URL!
 
 
-# **REDUX Toolkit**
+# REDUX Toolkit
 
 Redux Toolkit is a set of libraries and tools that make it easier to manage state in React applications using Redux. 
 
@@ -2863,3 +2865,4 @@ const reducer = (state = initialState, action) => {
 };
 ```
 In this example, we define a searchTodos action creator that takes a keyword as parameter and dispatches a SEARCH_TODOS_REQUEST action with the keyword as payload. 
+1.#define
